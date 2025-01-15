@@ -11,7 +11,7 @@ const CharacterGenerator = () => {
     'Sir Pentious', 'Vox', 'Valentino', 'Velvette', 'Camilla', 'Zestial',
     'Lucifer', 'Rosie', 'Adam', 'Lute', 'Emily', 'Sera', 'Travis',
     "Vox's Assistant", 'Melissa', 'Baxter', 'Clara', 'Odette', 'Abel',
-    'St. Peter', 'Molly', 'Arakniss', 'Frank', 'Egg Boiz'
+    'St. Peter', 'Molly', 'Arakniss', 'Frank', 'Egg Boiz', 'Missi Zilla', 'Lilith', 'Mimzy', 'Cherri Bomb'
   ];
 
   const helluvaBossNames = [
