@@ -1,6 +1,7 @@
 import React from 'react';
 import CharacterGenerator from './CharacterGenerator';
 import GenreGenerator from './GenreGenerator';
+import Tropes from './Tropes';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <h1>Helluva Fanfiction Challenge</h1>
       <CharacterGenerator />
       <GenreGenerator />
+      <Tropes />
     </div>
   )
   

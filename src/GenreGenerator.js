@@ -13,45 +13,48 @@ const GenreGenerator = () => {
 
   const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
 
-  const pickRandomGenres = (count) => {
-    const shuffled = [...genres].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
+  const pickRandomUniqueGenre = (usedGenres) => {
+    const availableGenres = genres.filter((genre) => !usedGenres.includes(genre));
+    const randomIndex = Math.floor(Math.random() * availableGenres.length);
+    return availableGenres[randomIndex];
   };
 
   useEffect(() => {
     if (!cycling) return;
 
     const genreIntervals = [];
-    const cyclingGenres = [...generatedGenres]; // Local copy to track cycling values
     const finalizationTimeouts = [];
+    const cyclingGenres = [...generatedGenres]; // Local copy to track cycling values
 
+    // Start cycling for each genre slot
     const startCycling = (index, delay) => {
-      // Start cycling for a specific genre slot
       genreIntervals[index] = setInterval(() => {
-        const randomIndex = Math.floor(Math.random() * genres.length);
-        cyclingGenres[index] = genres[randomIndex];
+        const usedGenres = cyclingGenres.filter((genre) => genre); // Exclude already finalized genres
+        const randomGenre = pickRandomUniqueGenre(usedGenres);
+        cyclingGenres[index] = randomGenre;
         setGeneratedGenres([...cyclingGenres]);
       }, 100);
 
-      // Stop cycling for this slot after the delay
+      // Finalize the genre after the given delay
       finalizationTimeouts[index] = setTimeout(() => {
         clearInterval(genreIntervals[index]);
-        const finalGenres = pickRandomGenres(index + 1); // Pick up to the current genre slot
-        cyclingGenres[index] = finalGenres[index]; // Finalize the specific genre
+        const usedGenres = cyclingGenres.filter((genre) => genre); // Exclude finalized genres
+        const finalGenre = pickRandomUniqueGenre(usedGenres);
+        cyclingGenres[index] = finalGenre; // Set the final unique genre
         setGeneratedGenres([...cyclingGenres]);
 
-        // If all genres have finalized, stop cycling entirely
-        if (index === Math.min(selectDifficulty.split(' ')[0], 3) - 1) {
+        // Stop cycling if all genres are finalized
+        if (index === delays.length - 1) {
           setCycling(false);
         }
       }, delay);
     };
 
-    // Determine cycling and finalization based on difficulty
+    // Determine the number of genres to generate based on difficulty
     const count = selectDifficulty === '1 - Easy' ? 1 : selectDifficulty === '2 - Medium' ? 2 : 3;
-
-    // Start cycling for each genre slot with staggered finalization
     const delays = [3000, 6000, 9000]; // Staggered delays for finalization
+
+    // Start cycling for each required genre slot
     for (let i = 0; i < count; i++) {
       startCycling(i, delays[i]);
     }
@@ -63,10 +66,16 @@ const GenreGenerator = () => {
     };
   }, [cycling, selectDifficulty]);
 
-  const handleStartCycling = (e) => {
-    setSelectDifficulty(e.target.value);
+  const handleStartCycling = () => {
+    if (!selectDifficulty) return; // Ensure difficulty is selected
     setGeneratedGenres(['', '', '']); // Clear genres before starting a new cycle
     setCycling(true);
+  };
+
+  const handleDifficultyChange = (e) => {
+    setSelectDifficulty(e.target.value); // Set difficulty
+    setCycling(false); // Stop any ongoing cycling
+    setGeneratedGenres(['', '', '']); // Reset generated genres
   };
 
   return (
@@ -74,7 +83,7 @@ const GenreGenerator = () => {
       <h2>Genre Generator</h2>
       <label>
         Pick a Difficulty:
-        <select value={selectDifficulty} onChange={handleStartCycling}>
+        <select value={selectDifficulty} onChange={handleDifficultyChange}>
           <option value="" disabled>
             Select a difficulty
           </option>
@@ -85,7 +94,7 @@ const GenreGenerator = () => {
           ))}
         </select>
       </label>
-      <button onClick={() => setCycling(true)} disabled={!selectDifficulty || cycling}>
+      <button onClick={handleStartCycling} disabled={!selectDifficulty || cycling}>
         Generate Genre
       </button>
       <div className="generated-genres">
