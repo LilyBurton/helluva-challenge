@@ -9,7 +9,6 @@ function App() {
       <h1>Helluva Fanfiction Challenge</h1>
       <CharacterGenerator />
       <GenreGenerator />
-      <Tropes />
     </div>
   )
   
