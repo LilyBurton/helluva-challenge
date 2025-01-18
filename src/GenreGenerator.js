@@ -8,7 +8,7 @@ const GenreGenerator = () => {
   const genres = [
     'Action', 'Adventure', 'Comedy', 'Crime', 'Drama', 
     'Fantasy', 'Historical', 'Horror', 'Mystery', 
-    'Romance', 'Sci-fi', 'Thriller', 'Western'
+    'Romance and Smut', 'Sci-fi', 'Thriller', 'Western'
   ];
 
   const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
