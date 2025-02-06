@@ -18,16 +18,20 @@ const GenreGenerator = () => {
 
   const handleCharacterSelection = (firstName, secondName) => {
     setSelectedCharacter(firstName, secondName);
-    console.log(firstName)
-    console.log(secondName)
 
+    const filteredGenres = allGenres.filter((genre) => genre !== 'Romance');
     if (firstName === 'Octavia' || secondName === 'Octavia') {
-      const filteredGenres = allGenres.filter((genre) => genre !== 'Romance');
       setGeneratedGenres(filteredGenres);
-      console.log('Filtered Genres for Octavia:', filteredGenres)
     } else {
       setGeneratedGenres(allGenres);
-      console.log('Default Genres:', allGenres)
+    }
+
+    if ((firstName === 'Lucifer' && secondName === 'Charlie') || (firstName === 'Charlie' && secondName === 'Lucifer')) {
+        setGeneratedGenres(filteredGenres);
+        console.log('Filtered Genres for Lucifer and Charlie:', filteredGenres)
+    } else {
+        setGeneratedGenres(allGenres);
+        console.log(`Default Genres for ${firstName} and ${secondName}:`, allGenres);
     }
   };
 
