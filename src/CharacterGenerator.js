@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
-const CharacterGenerator = () => {
-    const [generatedFirstName, setGeneratedFirstName] = useState('');
-    const [generatedSecondName, setGeneratedSecondName] = useState('');
-    const [selectedShow, setSelectedShow] = useState('');
-    const [isCycling, setIsCycling] = useState(false);
+const CharacterGenerator = ({ onCharacterGenerated }) => {
+  const [generatedFirstName, setGeneratedFirstName] = useState('');
+  const [generatedSecondName, setGeneratedSecondName] = useState('');
+  const [selectedShow, setSelectedShow] = useState('');
+  const [isCycling, setIsCycling] = useState(false);
 
   const hazbinHotelNames = [
     'Charlie', 'Vaggie', 'Angel Dust', 'Nifty', 'Alastor', 'Husk',
@@ -19,7 +19,7 @@ const CharacterGenerator = () => {
     'Octavia', 'Striker', 'Asmodeuous', 'Mammon', 'Queen Bee',
     'Fizzarolli', 'Satan', 'Andrealphus', 'Verosika', 'Sallie May',
     'Belphegor', 'Leviathan', 'Martha', 'Mrs Mayberry', 'Emberlynn',
-    'Chazwick', 'Barbie Wire', 'Tex', 'Dennis'
+    'Chazwick', 'Barbie Wire', 'Tex', 'Dennis', 'Vassago'
   ];
 
   const vivShows = ['Hazbin Hotel', 'Helluva Boss', 'Crossover'];
@@ -27,61 +27,75 @@ const CharacterGenerator = () => {
   const getFirstNameList = () => {
     if (selectedShow === 'Hazbin Hotel' || selectedShow === 'Crossover') return hazbinHotelNames;
     if (selectedShow === 'Helluva Boss') return helluvaBossNames;
+    return [];
   };
 
   const getSecondNameList = () => {
     if (selectedShow === 'Helluva Boss' || selectedShow === 'Crossover') return helluvaBossNames;
-    if (selectedShow === 'Hazbin Hotel') return hazbinHotelNames
-  }
+    if (selectedShow === 'Hazbin Hotel') return hazbinHotelNames;
+    return [];
+  };
 
   const handleSelect = (e) => {
     setSelectedShow(e.target.value);
     setGeneratedFirstName('');
     setGeneratedSecondName('');
-    setIsCycling(false); // Stop cycling when the show changes
+    setIsCycling(false);
   };
 
-  // Cycle through names for 3 seconds
   useEffect(() => {
     if (!isCycling) return;
 
     const firstNames = getFirstNameList();
-    if (firstNames.length === 0) return;
+    const secondNames = getSecondNameList();
+
+    if (firstNames.length === 0 || secondNames.length === 0) return;
 
     let firstRandomIndex = Math.floor(Math.random() * firstNames.length);
-    const firstIntervalId = setInterval(() => {
-      setGeneratedFirstName(firstNames[firstRandomIndex]);
-      firstRandomIndex = (firstRandomIndex + 1) % firstNames.length; // Cycle back to the start if at the end
-    }, 100); 
+    let secondRandomIndex = Math.floor(Math.random() * secondNames.length);
+    let finalFirstName = ''
+    let finalSecondName = ''
 
-    // Stop cycling after 3 seconds
+    // Cycling first name
+    const firstIntervalId = setInterval(() => {
+        firstRandomIndex = (firstRandomIndex + 1) % firstNames.length;
+        setGeneratedFirstName(firstNames[firstRandomIndex]);
+    }, 100);
+
+    // Cycling second name
+    const secondIntervalId = setInterval(() => {
+        secondRandomIndex = (secondRandomIndex + 1) % secondNames.length;
+        setGeneratedSecondName(secondNames[secondRandomIndex]);
+    }, 100);
+
+    // After 3 seconds, stop the first name interval
     const firstTimeoutId = setTimeout(() => {
       clearInterval(firstIntervalId);
-    }, 3000); // Stop after 3 seconds
+      finalFirstName = firstNames[firstRandomIndex]
+    }, 3000);
 
-    const secondNames = getSecondNameList();
-    if (secondNames.length === 0) return;
-
-    let secondRandomIndex = Math.floor(Math.random() * firstNames.length);
-    const secondIntervalId = setInterval(() => {
-      setGeneratedSecondName(secondNames[secondRandomIndex]);
-      secondRandomIndex = (secondRandomIndex + 1) % secondNames.length; // Cycle back to the start if at the end
-    }, 100); 
-
+    // After 6 seconds, stop the second name interval and stop cycling
     const secondTimeoutId = setTimeout(() => {
       clearInterval(secondIntervalId);
+      finalSecondName = secondNames[secondRandomIndex]
+
+      setGeneratedFirstName(finalFirstName)
+      setGeneratedSecondName(finalSecondName)
       setIsCycling(false);
+
+      onCharacterGenerated(firstNames[firstRandomIndex], secondNames[secondRandomIndex]);
     }, 6000);
 
+    
+
+    // Cleanup intervals and timeouts
     return () => {
       clearInterval(firstIntervalId);
-      clearInterval(secondIntervalId)
+      clearInterval(secondIntervalId);
       clearTimeout(firstTimeoutId);
       clearTimeout(secondTimeoutId);
     };
   }, [isCycling, selectedShow]);
-
-  
 
   return (
     <div className="name-generator-container">
@@ -112,6 +126,6 @@ const CharacterGenerator = () => {
       </div>
     </div>
   );
-}
+};
 
 export default CharacterGenerator;
