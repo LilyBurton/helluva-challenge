@@ -20,20 +20,40 @@ const GenreGenerator = () => {
     setSelectedCharacter(firstName, secondName);
 
     const filteredGenres = allGenres.filter((genre) => genre !== 'Romance');
-    if (firstName === 'Octavia' || secondName === 'Octavia') {
-      setGeneratedGenres(filteredGenres);
-    } else {
-      setGeneratedGenres(allGenres);
-    }
-
-    if ((firstName === 'Lucifer' && secondName === 'Charlie') || (firstName === 'Charlie' && secondName === 'Lucifer')) {
+    if (
+        firstName === 'Octavia' || secondName === 'Octavia' ||
+        (firstName === 'Blitzo' && secondName === 'Loona') ||
+        (firstName === 'Loona' && secondName === 'Blitzo') ||
+        (firstName === 'Lucifer' && secondName === 'Charlie') ||
+        (firstName === 'Charlie' && secondName === 'Lucifer') ||
+        (firstName === 'Blitzo' && secondName === 'Barbie Wire') ||
+        (firstName === 'Barbie Wire' && secondName === 'Blitzo') ||
+        (firstName === 'Stella' && secondName === 'Andrealphus') ||
+        (firstName === 'Andrealphus' && secondName === 'Stella') ||
+        (firstName === 'Millie' && secondName === 'Sallie May') ||
+        (firstName === 'Sallie May' && secondName === 'Millie') ||
+        (firstName === 'Charlie' && secondName === 'Lilith') ||
+        (firstName === 'Lilith' && secondName === 'Charlie') ||
+        (firstName === 'Angel Dust' && secondName === 'Molly') ||
+        (firstName === 'Molly' && secondName === 'Angel Dust') ||
+        (firstName === 'Angel Dust' && secondName === 'Arakniss') ||
+        (firstName === 'Arakniss' && secondName === 'Angel Dust') ||
+        (firstName === 'Sera' && secondName === 'Emily') ||
+        (firstName === 'Emily' && secondName === 'Sera') ||
+        (firstName === 'Adam' && secondName === 'Abel') ||
+        (firstName === 'Abel' && secondName === 'Adam') 
+        (firstName === 'Egg Boiz' || secondName === 'Egg Boiz') ||
+        (firstName === 'Frank' || secondName === 'Frank')
+    ) {
         setGeneratedGenres(filteredGenres);
-        console.log('Filtered Genres for Lucifer and Charlie:', filteredGenres)
+        console.log(`Filtered Genres for ${firstName} and ${secondName}:`, filteredGenres);
     } else {
         setGeneratedGenres(allGenres);
         console.log(`Default Genres for ${firstName} and ${secondName}:`, allGenres);
     }
   };
+
+    
 
   const pickRandomUnique = (pool, exclude) => {
     const available = pool.filter((item) => !exclude.includes(item));
@@ -181,7 +201,7 @@ const GenreGenerator = () => {
       )}
     </div>
   );
-};
+}
 
 export default GenreGenerator;
 
