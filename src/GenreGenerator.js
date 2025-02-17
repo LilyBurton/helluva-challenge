@@ -41,7 +41,7 @@ const GenreGenerator = () => {
         (firstName === 'Sera' && secondName === 'Emily') ||
         (firstName === 'Emily' && secondName === 'Sera') ||
         (firstName === 'Adam' && secondName === 'Abel') ||
-        (firstName === 'Abel' && secondName === 'Adam') 
+        (firstName === 'Abel' && secondName === 'Adam') ||
         (firstName === 'Egg Boiz' || secondName === 'Egg Boiz') ||
         (firstName === 'Frank' || secondName === 'Frank')
     ) {
