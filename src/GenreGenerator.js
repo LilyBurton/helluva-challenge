@@ -12,6 +12,7 @@ const GenreGenerator = () => {
   const [tropeDifficulty, setTropeDifficulty] = useState('');
   const [cyclingGenres, setCyclingGenres] = useState(false);
   const [cyclingTropes, setCyclingTropes] = useState(false);
+  const [showSynopsis, setShowSynopsis] = useState(false)
   
   const allGenres = Object.keys(Tropes); // List of genres
   const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
@@ -46,10 +47,8 @@ const GenreGenerator = () => {
         (firstName === 'Frank' || secondName === 'Frank')
     ) {
         setGeneratedGenres(filteredGenres);
-        console.log(`Filtered Genres for ${firstName} and ${secondName}:`, filteredGenres);
     } else {
         setGeneratedGenres(allGenres);
-        console.log(`Default Genres for ${firstName} and ${secondName}:`, allGenres);
     }
   };
 
@@ -125,6 +124,7 @@ const GenreGenerator = () => {
         
         if (index === count - 1) {
           setCyclingTropes(false);
+          setShowSynopsis(true)
         }
       }, delay);
     };
