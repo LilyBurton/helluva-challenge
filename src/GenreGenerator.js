@@ -17,8 +17,10 @@ const GenreGenerator = () => {
   const allGenres = Object.keys(Tropes); // List of genres
   const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
 
+
   const handleCharacterSelection = (firstName, secondName) => {
-    setSelectedCharacter(firstName, secondName);
+    const randomCharacter = Math.random() < 0.5 ? firstName : secondName;
+    setSelectedCharacter(randomCharacter);
 
     const filteredGenres = allGenres.filter((genre) => genre !== 'Romance');
     if (
@@ -156,15 +158,15 @@ const GenreGenerator = () => {
 
   return (
     <div>
+        <CharacterGenerator onCharacterGenerated={handleCharacterSelection} />
+    
       <h2>Genre Generator</h2>
-      <CharacterGenerator onCharacterGenerated={handleCharacterSelection} />
-
-      <label>
-        Pick Genre Difficulty:
-        <select value={genreDifficulty} onChange={(e) => setGenreDifficulty(e.target.value)}>
-          <option value="" disabled>Select a difficulty</option>
-          {difficultyLevels.map((difficulty, index) => (
-            <option key={index} value={difficulty}>{difficulty}</option>
+        <label>
+            Pick Genre Difficulty:
+            <select value={genreDifficulty} onChange={(e) => setGenreDifficulty(e.target.value)}>
+                <option value="" disabled>Select a difficulty</option>
+                    {difficultyLevels.map((difficulty, index) => (
+                <option key={index} value={difficulty}>{difficulty}</option>
           ))}
         </select>
       </label>
@@ -197,6 +199,16 @@ const GenreGenerator = () => {
             {finalizedTropes.length > 0 &&
               finalizedTropes.map((trope, index) => <p key={index}>{index + 1} Trope: {trope}</p>)}
           </div>
+          {showSynopsis && (
+            <div className="basic-synopsis">
+                <h2>Basic Synopsis</h2>
+                    <p>A story where {selectedCharacters[0]} and {selectedCharacters[1]} find themselves caught in{" "}
+                        {finalizedTropes.length > 1
+                        ? finalizedTropes[Math.floor(Math.random() * finalizedTropes.length)].name
+                        : finalizedTropes[0].name}.</p>
+            </div>
+          )}
+          
         </>
       )}
     </div>
