@@ -76,15 +76,24 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
 
     // After 6 seconds, stop the second name interval and stop cycling
     const secondTimeoutId = setTimeout(() => {
-      clearInterval(secondIntervalId);
-      finalSecondName = secondNames[secondRandomIndex]
+        clearInterval(secondIntervalId);
+        finalSecondName = secondNames[secondRandomIndex];
+      
+        setGeneratedFirstName(finalFirstName);
+        setGeneratedSecondName(finalSecondName);
+        setIsCycling(false);
+      
+        onCharacterGenerated([
+          { name: finalFirstName },
+          { name: finalSecondName }
+        ]);
+      
+      }, 6000);
 
-      setGeneratedFirstName(finalFirstName)
-      setGeneratedSecondName(finalSecondName)
-      setIsCycling(false);
-
-      onCharacterGenerated(firstNames[firstRandomIndex], secondNames[secondRandomIndex]);
-    }, 6000);
+    onCharacterGenerated([
+        { name: firstNames[firstRandomIndex] },
+        { name: secondNames[secondRandomIndex] }
+      ]);
 
     
 
