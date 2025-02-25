@@ -11,12 +11,13 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
     'Sir Pentious', 'Vox', 'Valentino', 'Velvette', 'Camilla', 'Zestial',
     'Lucifer', 'Rosie', 'Adam', 'Lute', 'Emily', 'Sera', 'Travis',
     "Vox's Assistant", 'Melissa', 'Baxter', 'Clara', 'Odette', 'Abel',
-    'St. Peter', 'Molly', 'Arakniss', 'Frank', 'Egg Boiz', 'Missi Zilla', 'Lilith', 'Mimzy', 'Cherri Bomb', 'Katie Killjoy', 'Tom Trench'
+    'St. Peter', 'Molly', 'Arakniss', 'Frank', 'Egg Boiz', 'Missi Zilla', 
+    'Lilith', 'Mimzy', 'Cherri Bomb', 'Katie Killjoy', 'Tom Trench'
   ];
 
   const helluvaBossNames = [
     'Blitzo', 'Millie', 'Moxxie', 'Loona', 'Stolas', 'Stella',
-    'Octavia', 'Striker', 'Asmodeuous', 'Mammon', 'Queen Bee',
+    'Octavia', 'Striker', 'Asmodeous', 'Mammon', 'Queen Bee',
     'Fizzarolli', 'Satan', 'Andrealphus', 'Verosika', 'Sallie May',
     'Belphegor', 'Leviathan', 'Martha', 'Mrs Mayberry', 'Emberlynn',
     'Chazwick', 'Barbie Wire', 'Tex', 'Dennis', 'Vassago'
@@ -24,18 +25,31 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
 
   const vivShows = ['Hazbin Hotel', 'Helluva Boss', 'Crossover'];
 
+  // Get first name list based on the selected show
   const getFirstNameList = () => {
     if (selectedShow === 'Hazbin Hotel' || selectedShow === 'Crossover') return hazbinHotelNames;
     if (selectedShow === 'Helluva Boss') return helluvaBossNames;
     return [];
   };
 
-  const getSecondNameList = () => {
-    if (selectedShow === 'Helluva Boss' || selectedShow === 'Crossover') return helluvaBossNames;
-    if (selectedShow === 'Hazbin Hotel') return hazbinHotelNames;
-    return [];
+  // Get second name list and filter out first name
+  const getSecondNameList = (firstName) => {
+    let names = [];
+
+    if (selectedShow === 'Helluva Boss' || selectedShow === 'Crossover') {
+      names = [...helluvaBossNames];
+    }
+    if (selectedShow === 'Hazbin Hotel') {
+      names = [...hazbinHotelNames];
+    }
+
+    const filteredNames = names.filter(name => name !== firstName);
+    console.log(`Filtered Second Names (without ${firstName}):`, filteredNames); // Debugging
+
+    return filteredNames;
   };
 
+  // Handle show selection
   const handleSelect = (e) => {
     setSelectedShow(e.target.value);
     setGeneratedFirstName('');
@@ -43,61 +57,49 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
     setIsCycling(false);
   };
 
+  // Generate names with a cycling effect
   useEffect(() => {
     if (!isCycling) return;
 
     const firstNames = getFirstNameList();
-    const secondNames = getSecondNameList();
-
-    if (firstNames.length === 0 || secondNames.length === 0) return;
-
     let firstRandomIndex = Math.floor(Math.random() * firstNames.length);
+    let finalFirstName = firstNames[firstRandomIndex];
+
+    const secondNames = getSecondNameList(finalFirstName);
     let secondRandomIndex = Math.floor(Math.random() * secondNames.length);
-    let finalFirstName = ''
-    let finalSecondName = ''
+    let finalSecondName = secondNames[secondRandomIndex];
 
     // Cycling first name
     const firstIntervalId = setInterval(() => {
-        firstRandomIndex = (firstRandomIndex + 1) % firstNames.length;
-        setGeneratedFirstName(firstNames[firstRandomIndex]);
+      firstRandomIndex = (firstRandomIndex + 1) % firstNames.length;
+      setGeneratedFirstName(firstNames[firstRandomIndex]);
     }, 100);
 
     // Cycling second name
     const secondIntervalId = setInterval(() => {
-        secondRandomIndex = (secondRandomIndex + 1) % secondNames.length;
-        setGeneratedSecondName(secondNames[secondRandomIndex]);
+      secondRandomIndex = (secondRandomIndex + 1) % secondNames.length;
+      setGeneratedSecondName(secondNames[secondRandomIndex]);
     }, 100);
 
-    // After 3 seconds, stop the first name interval
+    // Stop cycling first name after 3 seconds
     const firstTimeoutId = setTimeout(() => {
       clearInterval(firstIntervalId);
-      finalFirstName = firstNames[firstRandomIndex]
+      setGeneratedFirstName(finalFirstName);
     }, 3000);
 
-    // After 6 seconds, stop the second name interval and stop cycling
+    // Stop cycling second name after 6 seconds
     const secondTimeoutId = setTimeout(() => {
-        clearInterval(secondIntervalId);
-        finalSecondName = secondNames[secondRandomIndex];
-      
-        setGeneratedFirstName(finalFirstName);
-        setGeneratedSecondName(finalSecondName);
-        setIsCycling(false);
-      
-        onCharacterGenerated([
-          { name: finalFirstName },
-          { name: finalSecondName }
-        ]);
-      
-      }, 6000);
+      clearInterval(secondIntervalId);
+      setGeneratedSecondName(finalSecondName);
+      setIsCycling(false);
 
-    onCharacterGenerated([
-        { name: firstNames[firstRandomIndex] },
-        { name: secondNames[secondRandomIndex] }
+      // Send selected names back to parent component
+      onCharacterGenerated([
+        { name: finalFirstName },
+        { name: finalSecondName }
       ]);
+    }, 6000);
 
-    
-
-    // Cleanup intervals and timeouts
     return () => {
       clearInterval(firstIntervalId);
       clearInterval(secondIntervalId);
@@ -112,9 +114,7 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
       <label>
         Pick a show:
         <select value={selectedShow} onChange={handleSelect}>
-          <option value="" disabled>
-            Select a show
-          </option>
+          <option value="" disabled>Select a show</option>
           {vivShows.map((show, index) => (
             <option key={index} value={show}>
               {show}
