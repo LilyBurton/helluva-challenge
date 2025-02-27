@@ -49,6 +49,19 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
     return filteredNames;
   };
 
+  // Change backgrounds based on the show
+  const backgroundShows = () => {
+    if (selectedShow === 'Hazbin Hotel') {
+      return {
+        backgroundImage: `url('/HazbinHotelWallpaper.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+        width: "100vh"
+      }
+    }
+  }
+
   // Handle show selection
   const handleSelect = (e) => {
     setSelectedShow(e.target.value);
