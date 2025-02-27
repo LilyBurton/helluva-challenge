@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './App.css'
 
 const CharacterGenerator = ({ onCharacterGenerated }) => {
   const [generatedFirstName, setGeneratedFirstName] = useState('');
@@ -50,17 +51,11 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
   };
 
   // Change backgrounds based on the show
-  const backgroundShows = () => {
-    if (selectedShow === 'Hazbin Hotel') {
-      return {
-        backgroundImage: `url('/HazbinHotelWallpaper.jpg')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "100vh",
-        width: "100vh"
-      }
-    }
-  }
+  const getBackgroundClass = () => {
+    if (selectedShow === "Hazbin Hotel") return "hazbin-background";
+    if (selectedShow === "Helluva Boss") return "helluva-background";
+    return "";
+  };
 
   // Handle show selection
   const handleSelect = (e) => {
@@ -122,6 +117,7 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
   }, [isCycling, selectedShow]);
 
   return (
+    <div className={getBackgroundClass()}>
     <div className="name-generator-container">
       <h2>Characters</h2>
       <label>
@@ -146,6 +142,7 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
           {generatedSecondName && `Second Character: ${generatedSecondName}`}
         </p>
       </div>
+    </div>
     </div>
   );
 };
