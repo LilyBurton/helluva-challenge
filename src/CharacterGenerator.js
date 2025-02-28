@@ -50,12 +50,6 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
     return filteredNames;
   };
 
-  // Change backgrounds based on the show
-  const getBackgroundClass = () => {
-    if (selectedShow === "Hazbin Hotel") return "hazbin-background";
-    if (selectedShow === "Helluva Boss") return "helluva-background";
-    return "";
-  };
 
   // Handle show selection
   const handleSelect = (e) => {
@@ -117,20 +111,8 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
   }, [isCycling, selectedShow]);
 
   return (
-    <div className={getBackgroundClass()}>
     <div className="name-generator-container">
       <h2>Characters</h2>
-      <label>
-        Pick a show:
-        <select value={selectedShow} onChange={handleSelect}>
-          <option value="" disabled>Select a show</option>
-          {vivShows.map((show, index) => (
-            <option key={index} value={show}>
-              {show}
-            </option>
-          ))}
-        </select>
-      </label>
       <div className="button-container">
         <button className="generate-button" onClick={() => setIsCycling(true)}>
           Generate!
@@ -142,7 +124,6 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
           {generatedSecondName && `Second Character: ${generatedSecondName}`}
         </p>
       </div>
-    </div>
     </div>
   );
 };
