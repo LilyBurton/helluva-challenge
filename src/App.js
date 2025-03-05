@@ -28,10 +28,10 @@ function App() {
   return (
     <div className={'app-container'}>
       <div className = {`${getBackgroundClass()}`}>
-      <h1>Helluva Fanfiction Challenge</h1>
-      
+
       {/* ✅ Fixed dropdown */}
       <div className = 'show-selection'>
+      <h1>Helluva Fanfiction Challenge</h1>
       <label>
         Pick a show:
         <select value={selectedShow} onChange={handleSelect}>
