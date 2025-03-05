@@ -12,7 +12,7 @@ function App() {
   const getBackgroundClass = () => {
     if (selectedShow === "Hazbin Hotel") return "hazbin-background";
     if (selectedShow === "Helluva Boss") return "helluva-background";
-    return "";
+    return "default-background";
   };
 
   const handleSelect = (e) => {
@@ -26,10 +26,12 @@ function App() {
   };
 
   return (
-    <div className={`app-container ${getBackgroundClass()}`}>
+    <div className={'app-container'}>
+      <div className = {`${getBackgroundClass()}`}>
       <h1>Helluva Fanfiction Challenge</h1>
       
       {/* ✅ Fixed dropdown */}
+      <div className = 'show-selection'>
       <label>
         Pick a show:
         <select value={selectedShow} onChange={handleSelect}>
@@ -53,7 +55,9 @@ function App() {
       )} */}
 
       <GenreGenerator />
+      </div>
     </div>
+  </div>
   );
 }
 
