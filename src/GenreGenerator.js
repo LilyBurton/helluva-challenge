@@ -153,7 +153,7 @@ const GenreGenerator = () => {
 
   return (
     <div>
-      <CharacterGenerator onCharacterGenerated={handleCharacterSelection} />
+      {/* <CharacterGenerator onCharacterGenerated={handleCharacterSelection} /> */}
 
       <h2>Genre Generator</h2>
       <label>

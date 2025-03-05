@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import './App.css'
+import './App.css';
 
-const CharacterGenerator = ({ onCharacterGenerated }) => {
+const CharacterGenerator = ({ onCharacterGenerated, selectedShow }) => {
   const [generatedFirstName, setGeneratedFirstName] = useState('');
   const [generatedSecondName, setGeneratedSecondName] = useState('');
-  const [selectedShow, setSelectedShow] = useState('');
   const [isCycling, setIsCycling] = useState(false);
 
   const hazbinHotelNames = [
@@ -24,44 +23,23 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
     'Chazwick', 'Barbie Wire', 'Tex', 'Dennis', 'Vassago'
   ];
 
-  const vivShows = ['Hazbin Hotel', 'Helluva Boss', 'Crossover'];
-
-  // Get first name list based on the selected show
   const getFirstNameList = () => {
-    if (selectedShow === 'Hazbin Hotel' || selectedShow === 'Crossover') return hazbinHotelNames;
+    if (selectedShow === 'Hazbin Hotel') return hazbinHotelNames;
     if (selectedShow === 'Helluva Boss') return helluvaBossNames;
+    if (selectedShow === 'Crossover') return [...hazbinHotelNames, ...helluvaBossNames];
     return [];
   };
 
-  // Get second name list and filter out first name
   const getSecondNameList = (firstName) => {
     let names = [];
-
-    if (selectedShow === 'Helluva Boss' || selectedShow === 'Crossover') {
-      names = [...helluvaBossNames];
-    }
-    if (selectedShow === 'Hazbin Hotel') {
-      names = [...hazbinHotelNames];
-    }
-
-    const filteredNames = names.filter(name => name !== firstName);
-    console.log(`Filtered Second Names (without ${firstName}):`, filteredNames); // Debugging
-
-    return filteredNames;
+    if (selectedShow === 'Hazbin Hotel') names = [...hazbinHotelNames];
+    if (selectedShow === 'Helluva Boss') names = [...helluvaBossNames];
+    if (selectedShow === 'Crossover') names = [...hazbinHotelNames, ...helluvaBossNames];
+    return names.filter(name => name !== firstName);
   };
 
-
-  // Handle show selection
-  const handleSelect = (e) => {
-    setSelectedShow(e.target.value);
-    setGeneratedFirstName('');
-    setGeneratedSecondName('');
-    setIsCycling(false);
-  };
-
-  // Generate names with a cycling effect
   useEffect(() => {
-    if (!isCycling) return;
+    if (!isCycling || !selectedShow) return;
 
     const firstNames = getFirstNameList();
     let firstRandomIndex = Math.floor(Math.random() * firstNames.length);
@@ -71,50 +49,46 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
     let secondRandomIndex = Math.floor(Math.random() * secondNames.length);
     let finalSecondName = secondNames[secondRandomIndex];
 
-    // Cycling first name
-    const firstIntervalId = setInterval(() => {
+    const firstInterval = setInterval(() => {
       firstRandomIndex = (firstRandomIndex + 1) % firstNames.length;
       setGeneratedFirstName(firstNames[firstRandomIndex]);
     }, 100);
 
-    // Cycling second name
-    const secondIntervalId = setInterval(() => {
+    const secondInterval = setInterval(() => {
       secondRandomIndex = (secondRandomIndex + 1) % secondNames.length;
       setGeneratedSecondName(secondNames[secondRandomIndex]);
     }, 100);
 
-    // Stop cycling first name after 3 seconds
-    const firstTimeoutId = setTimeout(() => {
-      clearInterval(firstIntervalId);
+    const stopFirstInterval = setTimeout(() => {
+      clearInterval(firstInterval);
       setGeneratedFirstName(finalFirstName);
     }, 3000);
 
-    // Stop cycling second name after 6 seconds
-    const secondTimeoutId = setTimeout(() => {
-      clearInterval(secondIntervalId);
+    const stopSecondInterval = setTimeout(() => {
+      clearInterval(secondInterval);
       setGeneratedSecondName(finalSecondName);
       setIsCycling(false);
-
-      // Send selected names back to parent component
-      onCharacterGenerated([
-        { name: finalFirstName },
-        { name: finalSecondName }
-      ]);
+      onCharacterGenerated([{ name: finalFirstName }, { name: finalSecondName }]);
     }, 6000);
 
     return () => {
-      clearInterval(firstIntervalId);
-      clearInterval(secondIntervalId);
-      clearTimeout(firstTimeoutId);
-      clearTimeout(secondTimeoutId);
+      clearInterval(firstInterval);
+      clearInterval(secondInterval);
+      clearTimeout(stopFirstInterval);
+      clearTimeout(stopSecondInterval);
     };
   }, [isCycling, selectedShow]);
 
   return (
     <div className="name-generator-container">
       <h2>Characters</h2>
+
       <div className="button-container">
-        <button className="generate-button" onClick={() => setIsCycling(true)}>
+        <button
+          className="generate-button"
+          onClick={() => setIsCycling(true)}
+          disabled={!selectedShow || isCycling}
+        >
           Generate!
         </button>
         <p className="generated-name">
@@ -129,3 +103,4 @@ const CharacterGenerator = ({ onCharacterGenerated }) => {
 };
 
 export default CharacterGenerator;
+

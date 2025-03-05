@@ -42,15 +42,15 @@ function App() {
         </select>
       </label>
 
-      <CharacterGenerator onCharacterGenerated={handleCharacterGenerated} />
+      <CharacterGenerator onCharacterGenerated={handleCharacterGenerated} selectedShow={selectedShow} />
       
       {/* ✅ Display generated character names */}
-      {generatedCharacters.length > 0 && (
+      {/* {generatedCharacters.length > 0 && (
         <div className="generated-characters">
           <h2>Generated Characters:</h2>
           <p>{generatedCharacters[0]?.name} & {generatedCharacters[1]?.name}</p>
         </div>
-      )}
+      )} */}
 
       <GenreGenerator />
     </div>
