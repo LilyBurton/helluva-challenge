@@ -15,6 +15,18 @@ function App() {
     return "default-background";
   };
 
+  const getTitleClass = () => {
+    if (selectedShow === "Hazbin Hotel") return "hazbin-text";
+    if (selectedShow === "Helluva Boss") return "helluva-text";
+    return "default-text"
+  }
+
+  const getShowTitle = () => {
+    if (selectedShow === "Hazbin Hotel") return "Welcome to the Hazbin Hotel";
+    if (selectedShow === "Helluva Boss") return "I.M.P";
+    return "Helluva Fanfiction Challenge";
+  }
+
   const handleSelect = (e) => {
     setSelectedShow(e.target.value);
     setGeneratedCharacters([]); // ✅ Reset characters when changing the show
@@ -30,7 +42,7 @@ function App() {
 
       {/* ✅ Fixed dropdown */}
       <div className = 'show-selection'>
-      <h1>Helluva Fanfiction Challenge</h1>
+      <h1 className={getTitleClass()}>{getShowTitle()}</h1>
       <label>
         Pick a show:
         <select value={selectedShow} onChange={handleSelect}>
