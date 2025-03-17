@@ -22,7 +22,6 @@ function App() {
 
   const handleCharacterGenerated = (characters) => {
     setGeneratedCharacters(characters);
-    console.log("Generated Characters:", characters); // Debugging
   };
 
   return (
@@ -45,16 +44,8 @@ function App() {
       </label>
 
       <CharacterGenerator onCharacterGenerated={handleCharacterGenerated} selectedShow={selectedShow} />
-      
-      {/* ✅ Display generated character names */}
-      {/* {generatedCharacters.length > 0 && (
-        <div className="generated-characters">
-          <h2>Generated Characters:</h2>
-          <p>{generatedCharacters[0]?.name} & {generatedCharacters[1]?.name}</p>
-        </div>
-      )} */}
 
-      <GenreGenerator />
+      <GenreGenerator selectedCharacters={generatedCharacters}/>
       </div>
     </div>
   </div>

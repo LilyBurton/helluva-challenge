@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Tropes from './Tropes';
-import CharacterGenerator from './CharacterGenerator';
 
-const GenreGenerator = () => {
-  const [selectedCharacter, setSelectedCharacter] = useState([]);
+
+const GenreGenerator = ({ selectedCharacters }) => {
   const [generatedGenres, setGeneratedGenres] = useState([]);
   const [finalizedGenres, setFinalizedGenres] = useState([]);
   const [showTropeGenerator, setShowTropeGenerator] = useState(false);
@@ -14,19 +13,17 @@ const GenreGenerator = () => {
   const [cyclingTropes, setCyclingTropes] = useState(false);
   const [showSynopsis, setShowSynopsis] = useState(false);
 
+  console.log("Tropes Object:", Tropes);
+
   const allGenres = Object.keys(Tropes);
+  console.log("Extracted Genres (allGenres):", allGenres);
   const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
 
-  const handleCharacterSelection = (characters) => {
-    setSelectedCharacter(characters);
-    updateGenreSelection(characters);
-  };
+  useEffect(() => {
+    if (selectedCharacters.length < 2) return;
 
-  const updateGenreSelection = (characters) => {
-    if (characters.length < 2) return;
-
-    const firstName = characters[0]?.name;
-    const secondName = characters[1]?.name;
+    const firstName = selectedCharacters[0]?.name;
+    const secondName = selectedCharacters[1]?.name;
     const filteredGenres = allGenres.filter((genre) => genre !== 'Romance');
 
     if (
@@ -58,16 +55,16 @@ const GenreGenerator = () => {
     } else {
       setGeneratedGenres(allGenres);
     }
-  };
-
-  const pickRandomUnique = (pool, exclude) => {
+  }, [selectedCharacters]);
+    
+    const pickRandomUnique = (pool, exclude) => {
     const available = pool.filter((item) => !exclude.includes(item));
     return available.length > 0 ? available[Math.floor(Math.random() * available.length)] : '';
   };
 
   useEffect(() => {
-    if (!cyclingGenres) return;
 
+    if (!cyclingGenres) return;
     const count = genreDifficulty === '1 - Easy' ? 1 : genreDifficulty === '2 - Medium' ? 2 : 3;
     const delays = [3000, 6000, 9000];
     let tempGenres = new Array(count).fill('')
@@ -77,15 +74,18 @@ const GenreGenerator = () => {
     for (let i = 0; i < count; i++) {
       genreIntervals[i] = setInterval(() => {
         tempGenres[i] = pickRandomUnique(generatedGenres, tempGenres);
+        console.log(`Cycling Genre ${i + 1}:`, tempGenres[i]);
         setFinalizedGenres([...tempGenres]);
       }, 100);
 
       finalizationTimeouts[i] = setTimeout(() => {
         clearInterval(genreIntervals[i]);
         tempGenres[i] = pickRandomUnique(generatedGenres, tempGenres);
+        console.log(`Final Genre ${i + 1}:`, tempGenres[i]);
         setFinalizedGenres([...tempGenres]);
 
         if (i === count - 1) {
+          console.log("Genre selection complete.");
           setCyclingGenres(false);
           setShowTropeGenerator(true);
         }
@@ -112,6 +112,7 @@ const GenreGenerator = () => {
         const combinedTropes = finalizedGenres.flatMap((genre) => Tropes[genre] || []);
         if (combinedTropes.length > 0) {
           tempTropes[i] = pickRandomUnique(combinedTropes, []);
+          console.log(`Cycling Trope ${i + 1}:`, tempTropes[i]);
           setFinalizedTropes([...tempTropes]);
         }
       }, 100);
@@ -120,9 +121,11 @@ const GenreGenerator = () => {
         clearInterval(tropeIntervals[i]);
         const combinedTropes = finalizedGenres.flatMap((genre) => Tropes[genre] || []);
         tempTropes[i] = pickRandomUnique(combinedTropes, tempTropes);
+        console.log(`Final Trope ${i + 1}:`, tempTropes[i]);
         setFinalizedTropes([...tempTropes]);
 
         if (i === count - 1) {
+          console.log("Trope selection complete.");
           setCyclingTropes(false);
           setShowSynopsis(true);
         }
@@ -136,8 +139,8 @@ const GenreGenerator = () => {
   }, [cyclingTropes, finalizedGenres]);
 
   const generateSynopsis = () => {
-    const char1 = selectedCharacter[0]?.name || 'Character 1';
-    const char2 = selectedCharacter[1]?.name || 'Character 2';
+    const char1 = selectedCharacters[0]?.name || 'Character 1';
+    const char2 = selectedCharacters[1]?.name || 'Character 2';
     const [trope1, trope2, trope3] = finalizedTropes;
 
     if (finalizedTropes.length === 1) {
@@ -153,8 +156,6 @@ const GenreGenerator = () => {
 
   return (
     <div>
-      {/* <CharacterGenerator onCharacterGenerated={handleCharacterSelection} /> */}
-
       <h2>Genre Generator</h2>
       <label>
         Pick Genre Difficulty:
