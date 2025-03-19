@@ -42,10 +42,10 @@ html, body {
     align-items: center;
   }
 
-  .hazbin-text {
+  .hazbin-text, .hazbin-characters, .hazbin-genres, .hazbin-tropes {
     font-family: 'Griffy';
   }
 
-  .helluva-text {
+  .helluva-text, .helluva-characters, .helluva-genres, .helluva-tropes {
     font-family: 'Rock Salt';
   }

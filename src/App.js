@@ -57,7 +57,7 @@ function App() {
 
       <CharacterGenerator onCharacterGenerated={handleCharacterGenerated} selectedShow={selectedShow} />
 
-      <GenreGenerator selectedCharacters={generatedCharacters}/>
+      <GenreGenerator selectedCharacters={generatedCharacters} selectedShow={selectedShow}/>
       </div>
     </div>
   </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Tropes from './Tropes';
 
 
-const GenreGenerator = ({ selectedCharacters }) => {
+const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const [generatedGenres, setGeneratedGenres] = useState([]);
   const [finalizedGenres, setFinalizedGenres] = useState([]);
   const [showTropeGenerator, setShowTropeGenerator] = useState(false);
@@ -154,9 +154,21 @@ const GenreGenerator = ({ selectedCharacters }) => {
     }
   };
 
+  const getGenres = () => {
+    if (selectedShow === 'Hazbin Hotel') return 'hazbin-genres';
+    if (selectedShow === 'Helluva Boss') return 'helluva-genres';
+    return 'default';
+  }
+
+  const getTropes = () => {
+    if (selectedShow === 'Hazbin Hotel') return 'hazbin-tropes';
+    if (selectedShow === 'Helluva Boss') return 'helluva-tropes';
+    return 'default';
+  }
+
   return (
     <div>
-      <h2>Genre Generator</h2>
+      <h2 className={getGenres()}>Genre Generator</h2>
       <label>
         Pick Genre Difficulty:
         <select value={genreDifficulty} onChange={(e) => setGenreDifficulty(e.target.value)}>
@@ -176,7 +188,7 @@ const GenreGenerator = ({ selectedCharacters }) => {
 
       {showTropeGenerator && (
         <>
-          <h2>Trope Generator</h2>
+          <h2 className={getTropes()}>Trope Generator</h2>
           <label>
             Pick Trope Difficulty:
             <select value={tropeDifficulty} onChange={(e) => setTropeDifficulty(e.target.value)}>

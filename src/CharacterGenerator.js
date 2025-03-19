@@ -79,9 +79,15 @@ const CharacterGenerator = ({ onCharacterGenerated, selectedShow }) => {
     };
   }, [isCycling, selectedShow]);
 
+  const getCharacters = () => {
+    if (selectedShow === "Hazbin Hotel") return "hazbin-characters";
+    if (selectedShow === "Helluva Boss") return "helluva-characters";
+    return "Helluva Fanfiction Challenge";
+  }
+
   return (
     <div className="name-generator-container">
-      <h2>Characters</h2>
+      <h2 className={getCharacters()}>Characters</h2>
 
       <div className="button-container">
         <button
