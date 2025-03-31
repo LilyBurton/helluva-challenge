@@ -2,56 +2,35 @@ import { useState, useEffect } from 'react';
 import './App.css';
 
 const CharacterGenerator = ({ onCharacterGenerated, selectedShow }) => {
+  const [characters, setCharacters] = useState([])
   const [generatedFirstName, setGeneratedFirstName] = useState('');
   const [generatedSecondName, setGeneratedSecondName] = useState('');
   const [isCycling, setIsCycling] = useState(false);
 
-  const hazbinHotelNames = [
-    'Charlie', 'Vaggie', 'Angel Dust', 'Nifty', 'Alastor', 'Husk',
-    'Sir Pentious', 'Vox', 'Valentino', 'Velvette', 'Camilla', 'Zestial',
-    'Lucifer', 'Rosie', 'Adam', 'Lute', 'Emily', 'Sera', 'Travis',
-    "Vox's Assistant", 'Melissa', 'Baxter', 'Clara', 'Odette', 'Abel',
-    'St. Peter', 'Molly', 'Arakniss', 'Frank', 'Egg Boiz', 'Missi Zilla', 
-    'Lilith', 'Mimzy', 'Cherri Bomb', 'Katie Killjoy', 'Tom Trench'
-  ];
+  useEffect(() => {
+    if (!selectedShow) return;
 
-  const helluvaBossNames = [
-    'Blitzo', 'Millie', 'Moxxie', 'Loona', 'Stolas', 'Stella',
-    'Octavia', 'Striker', 'Asmodeous', 'Mammon', 'Queen Bee',
-    'Fizzarolli', 'Satan', 'Andrealphus', 'Verosika', 'Sallie May',
-    'Belphegor', 'Leviathan', 'Martha', 'Mrs Mayberry', 'Emberlynn',
-    'Chazwick', 'Barbie Wire', 'Tex', 'Dennis', 'Vassago'
-  ];
-
-  const getFirstNameList = () => {
-    if (selectedShow === 'Hazbin Hotel') return hazbinHotelNames;
-    if (selectedShow === 'Helluva Boss') return helluvaBossNames;
-    if (selectedShow === 'Crossover') return [...hazbinHotelNames, ...helluvaBossNames];
-    return [];
-  };
-
-  const getSecondNameList = (firstName) => {
-    let names = [];
-    if (selectedShow === 'Hazbin Hotel') names = [...hazbinHotelNames];
-    if (selectedShow === 'Helluva Boss') names = [...helluvaBossNames];
-    if (selectedShow === 'Crossover') names = [...hazbinHotelNames, ...helluvaBossNames];
-    return names.filter(name => name !== firstName);
-  };
+    fetch(`http://localhost:8000/characters?show=${selectedShow}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setCharacters(data.map(char => char.name)); // Extract names
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, [selectedShow]);
 
   useEffect(() => {
-    if (!isCycling || !selectedShow) return;
+    if (!isCycling || characters.length === 0) return;
 
-    const firstNames = getFirstNameList();
-    let firstRandomIndex = Math.floor(Math.random() * firstNames.length);
-    let finalFirstName = firstNames[firstRandomIndex];
+    let firstRandomIndex = Math.floor(Math.random() * characters.length);
+    let finalFirstName = characters[firstRandomIndex];
 
-    const secondNames = getSecondNameList(finalFirstName);
+    let secondNames = characters.filter(name => name !== finalFirstName);
     let secondRandomIndex = Math.floor(Math.random() * secondNames.length);
     let finalSecondName = secondNames[secondRandomIndex];
 
     const firstInterval = setInterval(() => {
-      firstRandomIndex = (firstRandomIndex + 1) % firstNames.length;
-      setGeneratedFirstName(firstNames[firstRandomIndex]);
+      firstRandomIndex = (firstRandomIndex + 1) % characters.length;
+      setGeneratedFirstName(characters[firstRandomIndex]);
     }, 100);
 
     const secondInterval = setInterval(() => {
@@ -68,7 +47,6 @@ const CharacterGenerator = ({ onCharacterGenerated, selectedShow }) => {
       clearInterval(secondInterval);
       setGeneratedSecondName(finalSecondName);
       setIsCycling(false);
-      onCharacterGenerated([{ name: finalFirstName }, { name: finalSecondName }]);
     }, 6000);
 
     return () => {
@@ -77,7 +55,7 @@ const CharacterGenerator = ({ onCharacterGenerated, selectedShow }) => {
       clearTimeout(stopFirstInterval);
       clearTimeout(stopSecondInterval);
     };
-  }, [isCycling, selectedShow]);
+  }, [isCycling, characters]);
 
   const getCharacters = () => {
     if (selectedShow === "Hazbin Hotel") return "hazbin-characters";
