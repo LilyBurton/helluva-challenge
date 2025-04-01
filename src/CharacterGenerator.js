@@ -13,7 +13,7 @@ const CharacterGenerator = ({ onCharacterGenerated, selectedShow }) => {
     fetch(`http://localhost:8000/characters?show=${selectedShow}`)
       .then((response) => response.json())
       .then((data) => {
-        setCharacters(data.map(char => char.name)); // Extract names
+        setCharacters(data.characters); // Extract names
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [selectedShow]);
