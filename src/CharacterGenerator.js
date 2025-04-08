@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-const CharacterGenerator = ({ onCharacterGenerated, selectedShow }) => {
+const CharacterGenerator = ({ selectedShow }) => {
   const [characters, setCharacters] = useState([])
   const [generatedFirstName, setGeneratedFirstName] = useState('');
   const [generatedSecondName, setGeneratedSecondName] = useState('');
