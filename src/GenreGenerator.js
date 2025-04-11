@@ -5,17 +5,37 @@ import Tropes from './Tropes';
 const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const [generatedGenres, setGeneratedGenres] = useState([]);
   const [finalizedGenres, setFinalizedGenres] = useState([]);
+  const [allGenres, setAllGenres] = useState([])
   const [showTropeGenerator, setShowTropeGenerator] = useState(false);
   const [finalizedTropes, setFinalizedTropes] = useState([]);
   const [genreDifficulty, setGenreDifficulty] = useState('');
   const [tropeDifficulty, setTropeDifficulty] = useState('');
   const [cyclingGenres, setCyclingGenres] = useState(false);
   const [cyclingTropes, setCyclingTropes] = useState(false);
-  const [showSynopsis, setShowSynopsis] = useState(false);
 
   console.log("Tropes Object:", Tropes);
 
-  const allGenres = Object.keys(Tropes);
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/genres/');
+        const data = await response.json();
+  
+        // Optional filter: if you want to exclude Romance/Smut
+        const filtered = data
+          .map(g => g.name)
+          .filter(g => g !== 'Romance' && g !== 'Smut/Erotica');
+  
+        setAllGenres(filtered);
+      } catch (error) {
+        console.error('Error fetching genres:', error);
+      }
+    };
+  
+    fetchGenres();
+  }, []);
+  
+
   console.log("Extracted Genres (allGenres):", allGenres);
   const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
 
@@ -24,7 +44,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 
     const firstName = selectedCharacters[0]?.name;
     const secondName = selectedCharacters[1]?.name;
-    const filteredGenres = allGenres.filter((genre) => genre !== 'Romance');
+    const filteredGenres = allGenres.filter((genre) => genre !== 'Romance' && genre !== 'Smut/Erotica');
 
     if (
       firstName === 'Octavia' || secondName === 'Octavia' ||
@@ -127,7 +147,6 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
         if (i === count - 1) {
           console.log("Trope selection complete.");
           setCyclingTropes(false);
-          setShowSynopsis(true);
         }
       }, delays[i]);
     }

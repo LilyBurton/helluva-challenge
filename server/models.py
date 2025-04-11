@@ -23,3 +23,9 @@ class Character(Base):
     show_id = Column(Integer, ForeignKey("shows.id"), nullable=False)  # ✅ Foreign Key added
     show = relationship("Show", back_populates="characters")  # ✅ Relationship added
 
+class Genre(Base):
+    __tablename__ = "genres"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+

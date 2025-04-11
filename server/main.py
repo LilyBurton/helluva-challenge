@@ -4,12 +4,15 @@ from fastapi_sqlalchemy import DBSessionMiddleware, db
 
 from schema import Character as SchemaCharacter
 from schema import Show as SchemaShow
+from schema import Genre as SchemaGenre
 
 from schema import Character
 from schema import Show
+from schema import Genre
 
 from models import Character as ModelCharacter
 from models import Show as ModelShow
+from models import Genre as ModelGenre
 
 import os
 from dotenv import load_dotenv
@@ -65,7 +68,20 @@ async def show():
     show = db.session.query(ModelShow).all()
     return show
 
+@app.post('/genres/', response_model=SchemaGenre)
+async def genre(genre:SchemaGenre):
+    db_genre = ModelGenre(name=genre.name)
+    db.session.add(db_genre)
+    db.session.commit()
+    return db_genre
+
+@app.get('/genres/')
+async def genre():
+    genre = db.session.query(ModelGenre).all()
+    return genre
+
 # To run locally
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=8000)
+
 
