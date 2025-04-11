@@ -55,7 +55,7 @@ function App() {
         </select>
       </label>
 
-      <CharacterGenerator onCharacterGenerated={handleCharacterGenerated} selectedShow={selectedShow} />
+      <CharacterGenerator onCharacterGenerated={handleCharacterGenerated} selectedShow={selectedShow} setGeneratedCharacters={setGeneratedCharacters} />
 
       <GenreGenerator selectedCharacters={generatedCharacters} selectedShow={selectedShow}/>
       </div>

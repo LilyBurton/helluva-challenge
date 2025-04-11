@@ -138,22 +138,6 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     };
   }, [cyclingTropes, finalizedGenres]);
 
-  const generateSynopsis = () => {
-    const char1 = selectedCharacters[0]?.name || 'Character 1';
-    const char2 = selectedCharacters[1]?.name || 'Character 2';
-    const [trope1, trope2, trope3] = finalizedTropes;
-
-    if (finalizedTropes.length === 1) {
-      return `${char1} and ${char2} find themselves caught in a classic case of ${trope1}.`;
-    } else if (finalizedTropes.length === 2) {
-      return `When ${char1} and ${char2} encounter ${trope1}, they soon realize they're also entangled in ${trope2}, making their journey even more complicated.`;
-    } else if (finalizedTropes.length === 3) {
-      return `After getting involved in ${trope1}, ${char1} and ${char2} soon face ${trope2}. But just when they think it can't get any worse, ${trope3} changes everything!`;
-    } else {
-      return `A mysterious story featuring ${char1} and ${char2} with unexpected twists.`;
-    }
-  };
-
   const getGenres = () => {
     if (selectedShow === 'Hazbin Hotel') return 'hazbin-genres';
     if (selectedShow === 'Helluva Boss') return 'helluva-genres';
@@ -205,13 +189,6 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
           <div className="current-tropes">
             {finalizedTropes.map((trope, index) => <p key={index}>{index + 1} Trope: {trope}</p>)}
           </div>
-
-          {showSynopsis && (
-            <div className="basic-synopsis">
-              <h2>Basic Synopsis</h2>
-              <p>{generateSynopsis()}</p>
-            </div>
-          )}
         </>
       )}
     </div>

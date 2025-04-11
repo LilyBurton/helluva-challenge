@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-const CharacterGenerator = ({ selectedShow }) => {
+const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
   const [characters, setCharacters] = useState([])
   const [generatedFirstName, setGeneratedFirstName] = useState('');
   const [generatedSecondName, setGeneratedSecondName] = useState('');
@@ -47,6 +47,12 @@ const CharacterGenerator = ({ selectedShow }) => {
       clearInterval(secondInterval);
       setGeneratedSecondName(finalSecondName);
       setIsCycling(false);
+      if (onCharacterGenerated) {
+        onCharacterGenerated([
+          { name: finalFirstName },
+          { name: finalSecondName },
+        ]);
+      }
     }, 6000);
 
     return () => {
