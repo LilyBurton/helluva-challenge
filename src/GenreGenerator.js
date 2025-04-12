@@ -1,11 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import Tropes from './Tropes';
 
+// Blocking logic extracted to top-level scope
+const blockedNames = ['Octavia', 'Frank', 'Egg Bois', 'Kitty'];
+const blockedPairs = new Set([
+  ['Blitzo', 'Loona'],
+  ['Lucifer', 'Charlie'],
+  ['Blitzo', 'Barbie Wire'],
+  ['Stella', 'Andrealphus'],
+  ['Millie', 'Sallie May'],
+  ['Charlie', 'Lilith'],
+  ['Angel Dust', 'Molly'],
+  ['Angel Dust', 'Arakniss'],
+  ['Sera', 'Emily'],
+  ['Adam', 'Abel'],
+].map(pair => pair.sort().join('|')));
+
+function shouldBlockGenre(firstName, secondName, genre) {
+  const isBlockedGenre = genre === 'Romance' || genre === 'Smut/Erotica';
+  if (!isBlockedGenre) return false;
+
+  if (blockedNames.includes(firstName) || blockedNames.includes(secondName)) {
+    console.log(`🛑 Blocked by name: ${firstName} or ${secondName} for genre "${genre}"`);
+    return true;
+  }
+
+  
+  const pair = [firstName, secondName].sort().join('|');
+  if (blockedPairs.has(pair)) {
+    console.log(`🛑 Blocked by pair: ${firstName} and ${secondName} for genre "${genre}"`);
+    return true;
+  }
+
+  // return blockedPairs.has(pair);
+
+  console.log(`✅ Genre "${genre}" allowed for ${firstName} and ${secondName}`);
+  return false;
+}
+
 
 const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
+  const [allGenres, setAllGenres] = useState([]);
   const [generatedGenres, setGeneratedGenres] = useState([]);
   const [finalizedGenres, setFinalizedGenres] = useState([]);
-  const [allGenres, setAllGenres] = useState([])
   const [showTropeGenerator, setShowTropeGenerator] = useState(false);
   const [finalizedTropes, setFinalizedTropes] = useState([]);
   const [genreDifficulty, setGenreDifficulty] = useState('');
@@ -13,101 +50,79 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const [cyclingGenres, setCyclingGenres] = useState(false);
   const [cyclingTropes, setCyclingTropes] = useState(false);
 
-  console.log("Tropes Object:", Tropes);
+  const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
 
   useEffect(() => {
     const fetchGenres = async () => {
       try {
         const response = await fetch('http://localhost:8000/genres/');
         const data = await response.json();
-  
-        // Optional filter: if you want to exclude Romance/Smut
-        const filtered = data
-          .map(g => g.name)
-          .filter(g => g !== 'Romance' && g !== 'Smut/Erotica');
-  
-        setAllGenres(filtered);
+        const genreNames = data.map(g => g.name);
+        setAllGenres(genreNames);
       } catch (error) {
         console.error('Error fetching genres:', error);
       }
     };
-  
     fetchGenres();
   }, []);
-  
-
-  console.log("Extracted Genres (allGenres):", allGenres);
-  const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
 
   useEffect(() => {
     if (selectedCharacters.length < 2) return;
 
     const firstName = selectedCharacters[0]?.name;
     const secondName = selectedCharacters[1]?.name;
-    const filteredGenres = allGenres.filter((genre) => genre !== 'Romance' && genre !== 'Smut/Erotica');
 
-    if (
-      firstName === 'Octavia' || secondName === 'Octavia' ||
-      (firstName === 'Blitzo' && secondName === 'Loona') ||
-      (firstName === 'Loona' && secondName === 'Blitzo') ||
-      (firstName === 'Lucifer' && secondName === 'Charlie') ||
-      (firstName === 'Charlie' && secondName === 'Lucifer') ||
-      (firstName === 'Blitzo' && secondName === 'Barbie Wire') ||
-      (firstName === 'Barbie Wire' && secondName === 'Blitzo') ||
-      (firstName === 'Stella' && secondName === 'Andrealphus') ||
-      (firstName === 'Andrealphus' && secondName === 'Stella') ||
-      (firstName === 'Millie' && secondName === 'Sallie May') ||
-      (firstName === 'Sallie May' && secondName === 'Millie') ||
-      (firstName === 'Charlie' && secondName === 'Lilith') ||
-      (firstName === 'Lilith' && secondName === 'Charlie') ||
-      (firstName === 'Angel Dust' && secondName === 'Molly') ||
-      (firstName === 'Molly' && secondName === 'Angel Dust') ||
-      (firstName === 'Angel Dust' && secondName === 'Arakniss') ||
-      (firstName === 'Arakniss' && secondName === 'Angel Dust') ||
-      (firstName === 'Sera' && secondName === 'Emily') ||
-      (firstName === 'Emily' && secondName === 'Sera') ||
-      (firstName === 'Adam' && secondName === 'Abel') ||
-      (firstName === 'Abel' && secondName === 'Adam') ||
-      (firstName === 'Egg Boiz' || secondName === 'Egg Boiz') ||
-      (firstName === 'Frank' || secondName === 'Frank')
-    ) {
-      setGeneratedGenres(filteredGenres);
-    } else {
-      setGeneratedGenres(allGenres);
-    }
-  }, [selectedCharacters]);
-    
-    const pickRandomUnique = (pool, exclude) => {
-    const available = pool.filter((item) => !exclude.includes(item));
-    return available.length > 0 ? available[Math.floor(Math.random() * available.length)] : '';
+    const filtered = allGenres.filter(
+      genre => !shouldBlockGenre(firstName, secondName, genre)
+    );
+
+    setGeneratedGenres(filtered);
+  }, [selectedCharacters, allGenres]);
+
+  const pickRandomUnique = (pool, exclude) => {
+    const available = pool.filter(item => !exclude.includes(item));
+    return available.length > 0
+      ? available[Math.floor(Math.random() * available.length)]
+      : '';
   };
 
   useEffect(() => {
-
     if (!cyclingGenres) return;
+
     const count = genreDifficulty === '1 - Easy' ? 1 : genreDifficulty === '2 - Medium' ? 2 : 3;
     const delays = [3000, 6000, 9000];
-    let tempGenres = new Array(count).fill('')
+    let tempGenres = new Array(count).fill('');
     const genreIntervals = [];
     const finalizationTimeouts = [];
 
+    const firstName = selectedCharacters[0]?.name;
+    const secondName = selectedCharacters[1]?.name;
+
     for (let i = 0; i < count; i++) {
       genreIntervals[i] = setInterval(() => {
-        tempGenres[i] = pickRandomUnique(generatedGenres, tempGenres);
-        console.log(`Cycling Genre ${i + 1}:`, tempGenres[i]);
+        let picked;
+        do {
+          picked = pickRandomUnique(allGenres, tempGenres);
+        } while (shouldBlockGenre(firstName, secondName, picked));
+
+        tempGenres[i] = picked;
         setFinalizedGenres([...tempGenres]);
       }, 100);
 
       finalizationTimeouts[i] = setTimeout(() => {
         clearInterval(genreIntervals[i]);
-        tempGenres[i] = pickRandomUnique(generatedGenres, tempGenres);
-        console.log(`Final Genre ${i + 1}:`, tempGenres[i]);
+        let picked;
+        do {
+          picked = pickRandomUnique(allGenres, tempGenres);
+        } while (shouldBlockGenre(firstName, secondName, picked));
+
+        tempGenres[i] = picked;
         setFinalizedGenres([...tempGenres]);
 
         if (i === count - 1) {
-          console.log("Genre selection complete.");
           setCyclingGenres(false);
           setShowTropeGenerator(true);
+          console.log('✅ Genre selection complete:', tempGenres);
         }
       }, delays[i]);
     }
@@ -116,37 +131,35 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       genreIntervals.forEach(clearInterval);
       finalizationTimeouts.forEach(clearTimeout);
     };
-  }, [cyclingGenres, genreDifficulty]);
+  }, [cyclingGenres, genreDifficulty, allGenres, selectedCharacters]);
 
   useEffect(() => {
     if (!cyclingTropes || finalizedGenres.length === 0) return;
 
     const count = tropeDifficulty === '1 - Easy' ? 1 : tropeDifficulty === '2 - Medium' ? 2 : 3;
     const delays = [3000, 6000, 9000];
-    let tempTropes = new Array(count).fill('')
+    let tempTropes = new Array(count).fill('');
     const tropeIntervals = [];
     const finalizationTimeouts = [];
 
     for (let i = 0; i < count; i++) {
       tropeIntervals[i] = setInterval(() => {
-        const combinedTropes = finalizedGenres.flatMap((genre) => Tropes[genre] || []);
+        const combinedTropes = finalizedGenres.flatMap(genre => Tropes[genre] || []);
         if (combinedTropes.length > 0) {
           tempTropes[i] = pickRandomUnique(combinedTropes, []);
-          console.log(`Cycling Trope ${i + 1}:`, tempTropes[i]);
           setFinalizedTropes([...tempTropes]);
         }
       }, 100);
 
       finalizationTimeouts[i] = setTimeout(() => {
         clearInterval(tropeIntervals[i]);
-        const combinedTropes = finalizedGenres.flatMap((genre) => Tropes[genre] || []);
+        const combinedTropes = finalizedGenres.flatMap(genre => Tropes[genre] || []);
         tempTropes[i] = pickRandomUnique(combinedTropes, tempTropes);
-        console.log(`Final Trope ${i + 1}:`, tempTropes[i]);
         setFinalizedTropes([...tempTropes]);
 
         if (i === count - 1) {
-          console.log("Trope selection complete.");
           setCyclingTropes(false);
+          console.log('✅ Trope selection complete:', tempTropes);
         }
       }, delays[i]);
     }
@@ -155,19 +168,19 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       tropeIntervals.forEach(clearInterval);
       finalizationTimeouts.forEach(clearTimeout);
     };
-  }, [cyclingTropes, finalizedGenres]);
+  }, [cyclingTropes, finalizedGenres, tropeDifficulty]);
 
   const getGenres = () => {
     if (selectedShow === 'Hazbin Hotel') return 'hazbin-genres';
     if (selectedShow === 'Helluva Boss') return 'helluva-genres';
     return 'default';
-  }
+  };
 
   const getTropes = () => {
     if (selectedShow === 'Hazbin Hotel') return 'hazbin-tropes';
     if (selectedShow === 'Helluva Boss') return 'helluva-tropes';
     return 'default';
-  }
+  };
 
   return (
     <div>
@@ -186,7 +199,9 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       </button>
 
       <div className="generated-genres">
-        {finalizedGenres.map((genre, index) => <p key={index}>{index + 1} Genre: {genre}</p>)}
+        {finalizedGenres.map((genre, index) => (
+          <p key={index}>{index + 1} Genre: {genre}</p>
+        ))}
       </div>
 
       {showTropeGenerator && (
@@ -206,7 +221,9 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
           </button>
 
           <div className="current-tropes">
-            {finalizedTropes.map((trope, index) => <p key={index}>{index + 1} Trope: {trope}</p>)}
+            {finalizedTropes.map((trope, index) => (
+              <p key={index}>{index + 1} Trope: {trope}</p>
+            ))}
           </div>
         </>
       )}
@@ -215,6 +232,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 };
 
 export default GenreGenerator;
+
 
 
 
