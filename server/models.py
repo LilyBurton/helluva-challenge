@@ -29,3 +29,15 @@ class Genre(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
 
+    tropes = relationship("Trope", back_populates="genre")
+
+class Trope(Base):
+    __tablename__ = "tropes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    genre_id = Column(Integer, ForeignKey("genres.id"), nullable=False)
+    description = Column(String, nullable=False)
+
+    genre = relationship("Genre", back_populates="tropes")
+

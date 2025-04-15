@@ -41,6 +41,7 @@ function shouldBlockGenre(firstName, secondName, genre) {
 
 const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const [allGenres, setAllGenres] = useState([]);
+  const [genreTropes, setGenreTropes] = useState({})
   const [generatedGenres, setGeneratedGenres] = useState([]);
   const [finalizedGenres, setFinalizedGenres] = useState([]);
   const [showTropeGenerator, setShowTropeGenerator] = useState(false);
@@ -135,40 +136,61 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 
   useEffect(() => {
     if (!cyclingTropes || finalizedGenres.length === 0) return;
-
-    const count = tropeDifficulty === '1 - Easy' ? 1 : tropeDifficulty === '2 - Medium' ? 2 : 3;
-    const delays = [3000, 6000, 9000];
-    let tempTropes = new Array(count).fill('');
-    const tropeIntervals = [];
-    const finalizationTimeouts = [];
-
-    for (let i = 0; i < count; i++) {
-      tropeIntervals[i] = setInterval(() => {
-        const combinedTropes = finalizedGenres.flatMap(genre => Tropes[genre] || []);
-        if (combinedTropes.length > 0) {
-          tempTropes[i] = pickRandomUnique(combinedTropes, []);
+  
+    const fetchAndCycleTropes = async () => {
+      const allFetchedTropes = {};
+  
+      // Step 1: Fetch all tropes for finalized genres
+      for (const genre of finalizedGenres) {
+        try {
+          const response = await fetch(`http://localhost:8000/tropes/?genre=${genre}`);
+          const data = await response.json();
+          allFetchedTropes[genre] = data.tropes;
+        } catch (error) {
+          console.error(`Error fetching tropes for genre "${genre}":`, error);
+          allFetchedTropes[genre] = [];
+        }
+      }
+  
+      setGenreTropes(allFetchedTropes);
+  
+      // Step 2: Start cycling using fetched tropes
+      const count = tropeDifficulty === '1 - Easy' ? 1 : tropeDifficulty === '2 - Medium' ? 2 : 3;
+      const delays = [3000, 6000, 9000];
+      let tempTropes = new Array(count).fill('');
+      const tropeIntervals = [];
+      const finalizationTimeouts = [];
+  
+      for (let i = 0; i < count; i++) {
+        tropeIntervals[i] = setInterval(() => {
+          const combinedTropes = finalizedGenres.flatMap(genre => allFetchedTropes[genre] || []);
+          if (combinedTropes.length > 0) {
+            tempTropes[i] = pickRandomUnique(combinedTropes, []);
+            setFinalizedTropes([...tempTropes]);
+          }
+        }, 100);
+  
+        finalizationTimeouts[i] = setTimeout(() => {
+          clearInterval(tropeIntervals[i]);
+          const combinedTropes = finalizedGenres.flatMap(genre => allFetchedTropes[genre] || []);
+          tempTropes[i] = pickRandomUnique(combinedTropes, tempTropes);
           setFinalizedTropes([...tempTropes]);
-        }
-      }, 100);
-
-      finalizationTimeouts[i] = setTimeout(() => {
-        clearInterval(tropeIntervals[i]);
-        const combinedTropes = finalizedGenres.flatMap(genre => Tropes[genre] || []);
-        tempTropes[i] = pickRandomUnique(combinedTropes, tempTropes);
-        setFinalizedTropes([...tempTropes]);
-
-        if (i === count - 1) {
-          setCyclingTropes(false);
-          console.log('✅ Trope selection complete:', tempTropes);
-        }
-      }, delays[i]);
-    }
-
-    return () => {
-      tropeIntervals.forEach(clearInterval);
-      finalizationTimeouts.forEach(clearTimeout);
+  
+          if (i === count - 1) {
+            setCyclingTropes(false);
+          }
+        }, delays[i]);
+      }
+  
+      return () => {
+        tropeIntervals.forEach(clearInterval);
+        finalizationTimeouts.forEach(clearTimeout);
+      };
     };
+  
+    fetchAndCycleTropes();
   }, [cyclingTropes, finalizedGenres, tropeDifficulty]);
+  
 
   const getGenres = () => {
     if (selectedShow === 'Hazbin Hotel') return 'hazbin-genres';

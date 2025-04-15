@@ -5,14 +5,12 @@ from fastapi_sqlalchemy import DBSessionMiddleware, db
 from schema import Character as SchemaCharacter
 from schema import Show as SchemaShow
 from schema import Genre as SchemaGenre
-
-from schema import Character
-from schema import Show
-from schema import Genre
+from schema import Trope as SchemaTrope 
 
 from models import Character as ModelCharacter
 from models import Show as ModelShow
 from models import Genre as ModelGenre
+from models import Trope as ModelTrope
 
 import os
 from dotenv import load_dotenv
@@ -79,6 +77,25 @@ async def genre(genre:SchemaGenre):
 async def genre():
     genre = db.session.query(ModelGenre).all()
     return genre
+
+@app.post('/tropes/', response_model=SchemaTrope)
+async def trope(trope:SchemaTrope):
+    db_trope = ModelTrope(name=trope.name)
+    db.session.add(db_trope)
+    db.session.commit()
+    return db_trope
+
+@app.get('/tropes/')
+async def get_tropes(genre: str = None):
+    if genre:
+        genre_record = db.session.query(ModelGenre).filter_by(name=genre).first()
+        if not genre_record:
+            return {"tropes": []}
+        tropes = db.session.query(ModelTrope).filter_by(genre_id=genre_record.id).all()
+    else:
+        tropes = db.session.query(ModelTrope).all()
+
+    return {"tropes": [[trope.name, trope.description] for trope in tropes]}
 
 # To run locally
 if __name__ == '__main__':
