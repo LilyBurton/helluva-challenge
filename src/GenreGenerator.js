@@ -52,6 +52,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const [cyclingTropes, setCyclingTropes] = useState(false);
 
   const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
+  
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -98,6 +99,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 
     const firstName = selectedCharacters[0]?.name;
     const secondName = selectedCharacters[1]?.name;
+    
 
     for (let i = 0; i < count; i++) {
       genreIntervals[i] = setInterval(() => {
@@ -118,6 +120,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
         } while (shouldBlockGenre(firstName, secondName, picked));
 
         tempGenres[i] = picked;
+        
         setFinalizedGenres([...tempGenres]);
 
         if (i === count - 1) {
@@ -203,6 +206,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     if (selectedShow === 'Helluva Boss') return 'helluva-tropes';
     return 'default';
   };
+  console.log("Finalized Tropes:", finalizedTropes)
 
   return (
     <div>
@@ -244,7 +248,10 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 
           <div className="current-tropes">
             {finalizedTropes.map((trope, index) => (
-              <p key={index}>{index + 1} Trope: {trope}</p>
+              <div key={index} className="trope-entry">
+                <p>{index + 1} Trope: {trope[0]}</p>
+                <p className="trope-desc">{trope[1]}</p>
+          </div>
             ))}
           </div>
         </>
