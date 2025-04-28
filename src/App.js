@@ -55,9 +55,20 @@ function App() {
         </select>
       </label>
 
-      <CharacterGenerator onCharacterGenerated={handleCharacterGenerated} selectedShow={selectedShow} setGeneratedCharacters={setGeneratedCharacters} />
+      {(selectedShow === "Hazbin Hotel" || selectedShow === "Helluva Boss" || selectedShow === "Crossover") && (
+  <>
+    <CharacterGenerator 
+      onCharacterGenerated={handleCharacterGenerated}
+      selectedShow={selectedShow}
+      setGeneratedCharacters={setGeneratedCharacters}
+    />
+    <GenreGenerator 
+      selectedCharacters={generatedCharacters}
+      selectedShow={selectedShow}
+    />
+  </>
+)}
 
-      <GenreGenerator selectedCharacters={generatedCharacters} selectedShow={selectedShow}/>
       </div>
     </div>
   </div>

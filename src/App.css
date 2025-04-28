@@ -42,6 +42,18 @@ html, body {
     align-items: center;
   }
 
+  .default-background {
+    background-color: #85193C;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .hazbin-text, .hazbin-characters, .hazbin-genres, .hazbin-tropes {
     font-family: 'Griffy';
   }

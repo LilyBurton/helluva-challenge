@@ -226,7 +226,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 
       <div className="generated-genres">
         {finalizedGenres.map((genre, index) => (
-          <p key={index}>{index + 1} Genre: {genre}</p>
+          <p key={index}>{genre}</p>
         ))}
       </div>
 
@@ -249,7 +249,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
           <div className="current-tropes">
             {finalizedTropes.map((trope, index) => (
               <div key={index} className="trope-entry">
-                <p>{index + 1} Trope: {trope[0]}</p>
+                <p><strong>{trope[0]}</strong></p>
                 {!cyclingTropes && trope[1] && (
                   <p className="trope-desc">{trope[1]}</p>
                 )}
