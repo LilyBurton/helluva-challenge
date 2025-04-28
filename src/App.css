@@ -1,5 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Griffy&family=Kavoon&family=Pacifico&family=Parisienne&family=Quicksand:wght@300..700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Griffy&family=Kavoon&family=Pacifico&family=Parisienne&family=Quicksand:wght@300..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Griffy&family=Kavoon&family=Pacifico&family=Parisienne&family=Quicksand:wght@300..700&family=Rock+Salt&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Griffy&family=Kavoon&family=Pacifico&family=Parisienne&family=Quicksand:wght@300..700&family=Rock+Salt&display=swap');
+
 
 html, body {
   margin: 0;
@@ -10,7 +14,8 @@ html, body {
 }
 
 .app-container {
-  width: 8em;
+  width: 100%;
+  height: 100%;
 }
 
 .show-selection {
@@ -54,6 +59,20 @@ html, body {
     align-items: center;
   }
 
+  .default-text {
+    font-family: 'Bangers', cursive;
+    font-size: 100px;
+    text-shadow: 5px 2px black;
+    color: #C5172E;
+  }
+
+  .show-selection {
+    font-family: 'Bangers', cursive;
+    text-shadow: 5px 2px black;
+    color: #C5172E;
+    font-size: 50px;
+  }
+  
   .hazbin-text, .hazbin-characters, .hazbin-genres, .hazbin-tropes {
     font-family: 'Griffy';
   }
