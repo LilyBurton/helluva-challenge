@@ -44,15 +44,15 @@ function App() {
       <div className = 'show-selection'>
       <h1 className={getTitleClass()}>{getShowTitle()}</h1>
       <label>
-        Pick a show:
-        <select value={selectedShow} onChange={handleSelect}>
-          <option value="" disabled>Select a show</option>
+        Pick a show
+        <div className="button-selection">
           {vivShows.map((show, index) => (
-            <option key={index} value={show}>
+            <button key={index} value={show} onClick={() => handleSelect({ target: { value: show } })}
+            className="show-button">
               {show}
-            </option>
+            </button>
           ))}
-        </select>
+        </div>
       </label>
 
       {(selectedShow === "Hazbin Hotel" || selectedShow === "Helluva Boss" || selectedShow === "Crossover") && (
