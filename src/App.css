@@ -72,7 +72,41 @@ html, body {
     color: #C5172E;
     font-size: 50px;
   }
+
+  .button-selection {
+    padding: 50px;
+  }
+
+  .show-button {
+    padding: 2.5rem 2.5rem;
+    font-size: 1rem;
+    background-color: #F5EFFF;
+    border: 2px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 20px;
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    box-shadow: 5px 2px black;
+  }
   
+  /* Unique hover colors */
+  .hazbin-hotel-btn:hover {
+    background-color: #e60039;  /* deep pink/red */
+    color: white;
+  }
+  
+  .helluva-boss-btn:hover {
+    background-color: #540b75;  /* purple */
+    color: white;
+  }
+  
+  .crossover-btn:hover {
+    background-color: #117a65;  /* green-teal */
+    color: white;
+  }
+
   .hazbin-text, .hazbin-characters, .hazbin-genres, .hazbin-tropes {
     font-family: 'Griffy';
   }
