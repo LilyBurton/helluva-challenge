@@ -1,71 +1,10 @@
-# Getting Started with Create React App
+# Helluva Fanfiction Generator Challenge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Description
+A simple application where the user can pick between Hazbin Hotel, Helluva Boss and a crossover and they can generate characters, genres and the tropes randomly. The idea behind the application is to give people a little writing challenge based on the characters, genres and tropes that's picked for them but the users have the decision to pick which show and difficulty on each genre and trope section. 
 
-## Available Scripts
+# Tech Stack
+The tech stack I use is React.js, CSS, Node.js, Python and PostgreSQL. The reason for React is gives me the flexability to add in features such as cycling through options, being able to design different pages and fetching data while using functions to hold different classnames to make the code cleaner. For Python and PostgresSQL, I used Postgres to hold four different tables where I can add more characters and tropes depending on what's trending and Python is better for me to create the main, model and schema files to handle the SQL data easier, making it easier for React to fetch data.
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# helluva-challenge
+# How to use the project
+First you would be greeted by a homepage that contains three buttons, 'Hazbin Hotel', 'Helluva Boss' and 'Crossover' and the button will take you to different styled pages that contain different characters. On each page it has three sections, Characters, Genres and Tropes. For the character you just click generate and it will cycle through the characters one by one. For genres and tropes the users can can pick a difficulty based on how many genres and tropes they want to pick. Easy only picks one, medium is two and hard is three and again will cycle through and then the user can accept the challenge by trying to write the fanfiction based on what's chosen for them.
