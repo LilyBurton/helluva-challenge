@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import './App.css';
 
 const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
-  const [characters, setCharacters] = useState([])
+  const [hazbinCharacters, setHazbinCharacters] = useState([]);
+  const [helluvaCharacters, setHelluvaCharacters] = useState([]);
   const [generatedFirstName, setGeneratedFirstName] = useState('');
   const [generatedSecondName, setGeneratedSecondName] = useState('');
   const [isCycling, setIsCycling] = useState(false);
@@ -10,77 +11,93 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
   useEffect(() => {
     if (!selectedShow) return;
 
-    fetch(`http://localhost:8000/characters?show=${selectedShow}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setCharacters(data.characters); // Extract names
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+    if (selectedShow === "Crossover") {
+      // Fetch both Hazbin and Helluva characters
+      fetch("http://localhost:8000/characters?show=Hazbin Hotel")
+        .then((res) => res.json())
+        .then((data) => setHazbinCharacters(data.characters || []));
+
+      fetch("http://localhost:8000/characters?show=Helluva Boss")
+        .then((res) => res.json())
+        .then((data) => setHelluvaCharacters(data.characters || []));
+    } else {
+      // Fetch only one set based on selected show
+      fetch(`http://localhost:8000/characters?show=${selectedShow}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (selectedShow === "Hazbin Hotel") setHazbinCharacters(data.characters || []);
+          else setHelluvaCharacters(data.characters || []);
+        });
+    }
   }, [selectedShow]);
 
   useEffect(() => {
-    if (!isCycling || characters.length === 0) return;
+    if (!isCycling) return;
 
-    let firstRandomIndex = Math.floor(Math.random() * characters.length);
-    let finalFirstName = characters[firstRandomIndex];
+    let firstPool = selectedShow === "Crossover" ? hazbinCharacters : hazbinCharacters.concat(helluvaCharacters);
+    let secondPool = selectedShow === "Crossover" ? helluvaCharacters : firstPool;
 
-    let secondNames = characters.filter(name => name !== finalFirstName);
-    let secondRandomIndex = Math.floor(Math.random() * secondNames.length);
-    let finalSecondName = secondNames[secondRandomIndex];
+    if (firstPool.length === 0 || secondPool.length === 0) return;
+
+    let firstIndex = Math.floor(Math.random() * firstPool.length);
+    let secondIndex = Math.floor(Math.random() * secondPool.length);
+
+    const firstFinal = firstPool[firstIndex];
+    const secondFinal = secondPool[secondIndex];
 
     const firstInterval = setInterval(() => {
-      firstRandomIndex = (firstRandomIndex + 1) % characters.length;
-      setGeneratedFirstName(characters[firstRandomIndex]);
+      firstIndex = (firstIndex + 1) % firstPool.length;
+      setGeneratedFirstName(firstPool[firstIndex]);
     }, 100);
 
     const secondInterval = setInterval(() => {
-      secondRandomIndex = (secondRandomIndex + 1) % secondNames.length;
-      setGeneratedSecondName(secondNames[secondRandomIndex]);
+      secondIndex = (secondIndex + 1) % secondPool.length;
+      setGeneratedSecondName(secondPool[secondIndex]);
     }, 100);
 
-    const stopFirstInterval = setTimeout(() => {
+    const stopFirst = setTimeout(() => {
       clearInterval(firstInterval);
-      setGeneratedFirstName(finalFirstName);
+      setGeneratedFirstName(firstFinal);
     }, 3000);
 
-    const stopSecondInterval = setTimeout(() => {
+    const stopSecond = setTimeout(() => {
       clearInterval(secondInterval);
-      setGeneratedSecondName(finalSecondName);
+      setGeneratedSecondName(secondFinal);
       setIsCycling(false);
-      if (onCharacterGenerated) {
-        onCharacterGenerated([
-          { name: finalFirstName },
-          { name: finalSecondName },
-        ]);
-      }
+      onCharacterGenerated?.([
+        { name: firstFinal },
+        { name: secondFinal }
+      ]);
     }, 6000);
 
     return () => {
       clearInterval(firstInterval);
       clearInterval(secondInterval);
-      clearTimeout(stopFirstInterval);
-      clearTimeout(stopSecondInterval);
+      clearTimeout(stopFirst);
+      clearTimeout(stopSecond);
     };
-  }, [isCycling, characters]);
+  }, [isCycling, hazbinCharacters, helluvaCharacters, selectedShow]);
 
-  const getCharacters = () => {
+  const getCharactersClass = () => {
     if (selectedShow === "Hazbin Hotel") return "hazbin-characters";
     if (selectedShow === "Helluva Boss") return "helluva-characters";
-    return "Helluva Fanfiction Challenge";
+    if (selectedShow === "Crossover") return "crossover-characters";
+    return "default-text"; // For Crossover or home
   }
 
   return (
     <div className="name-generator-container">
-      <h2 className={getCharacters()}>Characters</h2>
+      <h2 className={getCharactersClass()}>Characters</h2>
 
       <div className="button-container">
         <button
           className="generate-button"
           onClick={() => setIsCycling(true)}
-          disabled={!selectedShow || isCycling}
+          disabled={isCycling}
         >
           Generate!
         </button>
+
         <p className="generated-name">
           {generatedFirstName && `First Character: ${generatedFirstName}`}
         </p>
@@ -93,4 +110,5 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
 };
 
 export default CharacterGenerator;
+
 

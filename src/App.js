@@ -12,18 +12,21 @@ function App() {
   const getBackgroundClass = () => {
     if (selectedShow === "Hazbin Hotel") return "hazbin-background";
     if (selectedShow === "Helluva Boss") return "helluva-background";
+    if (selectedShow === "Crossover") return "crossover-background"
     return "default-background";
   };
 
   const getTitleClass = () => {
     if (selectedShow === "Hazbin Hotel") return "hazbin-text";
     if (selectedShow === "Helluva Boss") return "helluva-text";
+    if (selectedShow === "Crossover") return "crossover-text";
     return "default-text"
   }
 
   const getShowTitle = () => {
     if (selectedShow === "Hazbin Hotel") return "Welcome to the Hazbin Hotel";
     if (selectedShow === "Helluva Boss") return "I.M.P";
+    if (selectedShow === "Crossover") return "Crossover"
     return "Helluva Fanfiction Challenge";
   }
 
@@ -38,16 +41,19 @@ function App() {
 
   return (
     <div className={'app-container'}>
-      <div className = {`${getBackgroundClass()}`}>
+      <div className = {`page-wrapper ${getBackgroundClass()}`}>
 
       {/* ✅ Fixed dropdown */}
       <div className = 'show-selection'>
       <h1 className={getTitleClass()}>{getShowTitle()}</h1>
         Pick a show
         <div className="button-selection">
-          {vivShows.map((show, index) => (
+          {vivShows
+          .filter(show => show !== selectedShow)
+          .map((show, index) => (
             <button key={index} value={show} onClick={() => handleSelect({ target: { value: show } })}
-            className={`show-button ${show.toLowerCase().replace(/\s/g, '-')}-btn`}>
+            className={`show-button ${show.toLowerCase().replace(" ", "-")}-btn ${selectedShow && 'small-button'}`}
+>
               {show}
             </button>
           ))}

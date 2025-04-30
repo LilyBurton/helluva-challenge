@@ -10,7 +10,9 @@ html, body {
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow: hidden; /* Prevent scrolling if unnecessary */
+  overflow-x: hidden;
+  overflow-y: auto 
+
 }
 
 .app-container {
@@ -27,7 +29,8 @@ html, body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
+    min-height: 100vh; /* allow to grow with content */
+  height: auto;
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -40,7 +43,21 @@ html, body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
+    min-height: 100vh; /* allow to grow with content */
+    height: auto;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .crossover-background {
+    background-color: #4F1C51;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    height: auto;
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -70,8 +87,15 @@ html, body {
     font-family: 'Bangers', cursive;
     text-shadow: 5px 2px black;
     color: #C5172E;
-    font-size: 50px;
+    font-size: 2rem;
   }
+  
+  @media (max-width: 768px) {
+    .show-selection {
+      font-size: 1.5rem;
+    }
+  }
+  
 
   .button-selection {
     padding: 50px;
@@ -107,10 +131,75 @@ html, body {
     color: white;
   }
 
-  .hazbin-text, .hazbin-characters, .hazbin-genres, .hazbin-tropes {
+  .default-background .show-selection {
+    font-family: 'Bangers', cursive;
+    font-size: 50px;
+    color: #C5172E;
+    text-shadow: 5px 2px black;
+  }
+  
+  .hazbin-background .show-selection {
+    font-family: 'Griffy';
+    font-size: 2rem;
+    color: white;
+  }
+
+  .crossover-background .show-selection {
+    font-size: 20px;
+  }
+  
+  .helluva-background .show-selection {
+    font-family: 'Rock Salt';
+    font-size: 1rem;
+    color: black;
+    text-shadow: none;
+  }
+
+  .crossover-background .show-selection {
+    font-size: 2rem;
+  }
+
+  .hazbin-background .small-button {
+    padding: 1.5rem 2rem;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+    margin: 0 10px; 
     font-family: 'Griffy';
   }
 
-  .helluva-text, .helluva-characters, .helluva-genres, .helluva-tropes {
+  .helluva-background .small-button {
     font-family: 'Rock Salt';
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    margin: 0 10px; 
+    box-shadow: none;
   }
+
+  .crossover-background .small-button {
+    padding: 1.5rem 2rem;
+    font-size: 1.5rem;
+    transition: all 0.2s ease;
+    margin: 0 10px; 
+    box-shadow: none;
+  }
+
+
+.hazbin-characters,
+.helluva-characters,
+.crossover-characters {
+  font-size: 30px; /* Base size for paragraph/text content */
+}
+
+.generate-button {
+  padding: 1.5rem 2rem;
+  background-color: #F5EFFF;
+  border: 2px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+
+  
+  
+  
