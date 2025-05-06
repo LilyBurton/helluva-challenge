@@ -213,12 +213,17 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       <h2 className={getGenres()}>Genre Generator</h2>
       <label>
         Pick Genre Difficulty:
-        <select value={genreDifficulty} onChange={(e) => setGenreDifficulty(e.target.value)}>
-          <option value="" disabled>Select a difficulty</option>
-          {difficultyLevels.map((difficulty, index) => (
-            <option key={index} value={difficulty}>{difficulty}</option>
+        <div className='difficulty-buttons'>
+          {['Easy', 'Medium', 'Hard'].map((level) => (
+            <button
+              key={level}
+              className={`difficulty-button ${genreDifficulty === level ? 'active' : ''}`}
+              onClick={() => setGenreDifficulty(level)}
+            >
+              {level}
+            </button>
           ))}
-        </select>
+        </div>
       </label>
       <button onClick={() => setCyclingGenres(true)} disabled={!genreDifficulty || cyclingGenres}>
         Generate Genres

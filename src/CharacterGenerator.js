@@ -40,7 +40,11 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
     if (firstPool.length === 0 || secondPool.length === 0) return;
 
     let firstIndex = Math.floor(Math.random() * firstPool.length);
-    let secondIndex = Math.floor(Math.random() * secondPool.length);
+    let secondIndex;
+
+    do {
+      secondIndex = Math.floor(Math.random() * secondPool.length);
+    } while (secondPool[secondIndex] === firstPool[firstIndex]);
 
     const firstFinal = firstPool[firstIndex];
     const secondFinal = secondPool[secondIndex];
