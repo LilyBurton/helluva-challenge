@@ -91,7 +91,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   useEffect(() => {
     if (!cyclingGenres) return;
 
-    const count = genreDifficulty === '1 - Easy' ? 1 : genreDifficulty === '2 - Medium' ? 2 : 3;
+    const count = genreDifficulty === 'Easy' ? 1 : genreDifficulty === 'Medium' ? 2 : 3;
     const delays = [3000, 6000, 9000];
     let tempGenres = new Array(count).fill('');
     const genreIntervals = [];
