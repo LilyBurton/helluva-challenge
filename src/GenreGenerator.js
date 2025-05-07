@@ -158,7 +158,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       setGenreTropes(allFetchedTropes);
   
       // Step 2: Start cycling using fetched tropes
-      const count = tropeDifficulty === '1 - Easy' ? 1 : tropeDifficulty === '2 - Medium' ? 2 : 3;
+      const count = tropeDifficulty === 'Easy' ? 1 : tropeDifficulty === 'Medium' ? 2 : 3;
       const delays = [3000, 6000, 9000];
       let tempTropes = new Array(count).fill('');
       const tropeIntervals = [];
@@ -238,15 +238,17 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       {showTropeGenerator && (
         <>
           <h2 className={getTropes()}>Trope Generator</h2>
-          <label>
-            Pick Trope Difficulty:
-            <select value={tropeDifficulty} onChange={(e) => setTropeDifficulty(e.target.value)}>
-              <option value="" disabled>Select a difficulty</option>
-              {difficultyLevels.map((difficulty, index) => (
-                <option key={index} value={difficulty}>{difficulty}</option>
-              ))}
-            </select>
-          </label>
+          <div className='tropes-buttons'>
+          {['Easy', 'Medium', 'Hard'].map((level) => (
+            <button
+              key={level}
+              className={`trope-button ${tropeDifficulty === level ? 'active' : ''}`}
+              onClick={() => setTropeDifficulty(level)}
+            >
+              {level}
+            </button>
+          ))}
+        </div>
           <button onClick={() => setCyclingTropes(true)} disabled={!tropeDifficulty || cyclingTropes}>
             Generate Tropes
           </button>
