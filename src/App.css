@@ -191,7 +191,7 @@ html, body {
   font-size: 30px; /* Base size for paragraph/text content */
 }
 
-.generate-button {
+.generate-button, .difficulty-button {
   padding: 1.5rem 2rem;
   background-color: #F5EFFF;
   border: 2px solid black;
@@ -199,12 +199,51 @@ html, body {
   cursor: pointer;
 }
 
-.difficulty-buttons {
+.difficulty-buttons, .tropes-buttons {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin: 1rem 0;
 }
+
+.difficulty-button, .trope-button {
+  padding: 1rem 2rem;
+  margin: 0.5rem;
+  border: 2px solid black;
+  border-radius: 8px;
+  font-family: 'Griffy', cursive;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: black;
+  background-color: white;
+}
+
+/* Hover styles */
+.difficulty-button.easy:hover, .trope-button.easy:hover {
+  background-color: #4CAF50; /* green */
+}
+.difficulty-button.medium:hover, .trope-button.medium:hover {
+  background-color: #F9C80E; /* yellow */
+}
+.difficulty-button.hard:hover, .trope-button.hard:hover {
+  background-color: #D72638; /* red */
+}
+
+/* Active (selected) styles */
+.difficulty-button.active.easy, .trope-button.active.easy {
+  background-color: #4CAF50;
+  color: white;
+}
+.difficulty-button.active.medium, .trope-button.active.medium {
+  background-color: #F9C80E;
+  color: white;
+}
+.difficulty-button.active.hard, .trope-button.active.hard {
+  background-color: #D72638;
+  color: white;
+}
+
 
 
   
