@@ -217,11 +217,12 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
           {['Easy', 'Medium', 'Hard'].map((level) => (
             <button
               key={level}
-              className={`difficulty-button ${level.toLowerCase()} ${genreDifficulty === level ? 'active' : ''}`}
+              className={`difficulty-button ${level.toLowerCase()} ${genreDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
               onClick={() => setGenreDifficulty(level)}
             >
               {level}
             </button>
+
           ))}
         </div>
       </label>
@@ -242,7 +243,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
           {['Easy', 'Medium', 'Hard'].map((level) => (
             <button
               key={level}
-              className={`trope-button ${level.toLowerCase()} ${tropeDifficulty === level ? 'active' : ''}`}
+              className={`trope-button ${level.toLowerCase()} ${tropeDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
               onClick={() => setTropeDifficulty(level)}
             >
               {level}

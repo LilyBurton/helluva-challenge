@@ -244,6 +244,17 @@ html, body {
   color: white;
 }
 
+.difficulty-button.helluva-boss,
+.trope-button.helluva-boss {
+  font-family: 'Rock Salt', cursive;
+}
+
+.difficulty-button.crossover,
+.trope-button.crossover {
+  font-family: 'Bangers', cursive;
+}
+
+
 
 
   
