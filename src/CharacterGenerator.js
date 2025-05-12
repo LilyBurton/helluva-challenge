@@ -95,7 +95,7 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
 
       <div className="button-container">
         <button
-          className="generate-button"
+          className={`button generate-character-button ${selectedShow.toLowerCase().replace(' ', '-')}`}
           onClick={() => setIsCycling(true)}
           disabled={isCycling}
         >

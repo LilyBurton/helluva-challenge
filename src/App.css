@@ -9,15 +9,11 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto 
-
 }
 
-.app-container {
-  width: 100%;
-  height: 100%;
+header, .container, .main {
+  margin-top: 0;
+  padding-top: 0;
 }
 
 .show-selection {
@@ -26,54 +22,21 @@ html, body {
 
 .hazbin-background {
     background-image: url("./HazbinHotelWallpaper.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh; /* allow to grow with content */
-  height: auto;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
   }
   
-  .helluva-background {
-    background-image: url("./HelluvaBossWallpaper.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh; /* allow to grow with content */
-    height: auto;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  .helluva-background, .crossover-background, .default-background, .hazbin-background {
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-size: cover; /* or 'contain' depending on your design */
+  background-position: center;
+}
 
-  .crossover-background {
-    background-color: #4F1C51;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    height: auto;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.helluva-background {
+  background-image: url("./HelluvaBossWallpaper.jpg");
+}
 
-  .default-background {
+  .crossover-background, .default-background {
     background-color: #4F1C51;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   .default-text {
@@ -81,6 +44,10 @@ html, body {
     font-size: 100px;
     text-shadow: 5px 2px black;
     color: #C5172E;
+  }
+
+  .default-text, .hazbin-text, .helluva-text {
+    margin: 0;
   }
 
   .show-selection {
@@ -97,11 +64,11 @@ html, body {
   }
   
 
-  .button-selection {
+  .button-selection, .difficulty-button, .trope-button, .generate-genre-button, .generate-character-button{
     padding: 50px;
   }
 
-  .show-button {
+  .show-button, .difficulty-button, .trope-button, .generate-genre-button, .generate-character-button {
     padding: 2.5rem 2.5rem;
     font-size: 1rem;
     background-color: #F5EFFF;
@@ -159,7 +126,7 @@ html, body {
     font-size: 2rem;
   }
 
-  .hazbin-background .small-button {
+  .hazbin-background .button {
     padding: 1.5rem 2rem;
     font-size: 1.2rem;
     transition: all 0.2s ease;
@@ -167,7 +134,7 @@ html, body {
     font-family: 'Griffy';
   }
 
-  .helluva-background .small-button {
+  .helluva-background .button {
     font-family: 'Rock Salt';
     padding: 1rem 1.5rem;
     font-size: 1rem;
@@ -176,7 +143,7 @@ html, body {
     box-shadow: none;
   }
 
-  .crossover-background .small-button {
+  .crossover-background .button {
     padding: 1.5rem 2rem;
     font-size: 1.5rem;
     transition: all 0.2s ease;
@@ -191,32 +158,11 @@ html, body {
   font-size: 30px; /* Base size for paragraph/text content */
 }
 
-.generate-button, .difficulty-button {
-  padding: 1.5rem 2rem;
-  background-color: #F5EFFF;
-  border: 2px solid black;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
 .difficulty-buttons, .tropes-buttons {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin: 1rem 0;
-}
-
-.difficulty-button, .trope-button {
-  padding: 1rem 2rem;
-  margin: 0.5rem;
-  border: 2px solid black;
-  border-radius: 8px;
-  font-family: 'Griffy', cursive;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: black;
-  background-color: white;
 }
 
 /* Hover styles */
@@ -245,14 +191,26 @@ html, body {
 }
 
 .difficulty-button.helluva-boss,
-.trope-button.helluva-boss {
+.trope-button.helluva-boss,
+.generate-genre-button.helluva-boss,
+.generate-character-button.helluva-boss {
   font-family: 'Rock Salt', cursive;
 }
 
 .difficulty-button.crossover,
-.trope-button.crossover {
+.trope-button.crossover,
+.generate-genre-button.crossover,
+.generate-character-button.crossover {
   font-family: 'Bangers', cursive;
 }
+
+.generate-genre-button.hazbin-hotel,
+ .difficulty-button.hazbin-hotel,
+.trope-button.hazbin-hotel,
+.generate-character-button.hazbin-hotel {
+  font-family: 'Griffy', cursive;
+}
+
 
 
 

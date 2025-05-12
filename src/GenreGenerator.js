@@ -212,12 +212,11 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     <div>
       <h2 className={getGenres()}>Genre Generator</h2>
       <label>
-        Pick Genre Difficulty:
         <div className='difficulty-buttons'>
           {['Easy', 'Medium', 'Hard'].map((level) => (
             <button
               key={level}
-              className={`difficulty-button ${level.toLowerCase()} ${genreDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
+              className={`button difficulty-button ${level.toLowerCase()} ${genreDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
               onClick={() => setGenreDifficulty(level)}
             >
               {level}
@@ -226,7 +225,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
           ))}
         </div>
       </label>
-      <button onClick={() => setCyclingGenres(true)} disabled={!genreDifficulty || cyclingGenres}>
+      <button onClick={() => setCyclingGenres(true)} disabled={!genreDifficulty || cyclingGenres} className={`button generate-genre-button ${selectedShow.toLowerCase().replace(' ', '-')}`}>
         Generate Genres
       </button>
 
@@ -243,14 +242,14 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
           {['Easy', 'Medium', 'Hard'].map((level) => (
             <button
               key={level}
-              className={`trope-button ${level.toLowerCase()} ${tropeDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
+              className={`button trope-button ${level.toLowerCase()} ${tropeDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
               onClick={() => setTropeDifficulty(level)}
             >
               {level}
             </button>
           ))}
         </div>
-          <button onClick={() => setCyclingTropes(true)} disabled={!tropeDifficulty || cyclingTropes}>
+          <button onClick={() => setCyclingTropes(true)} disabled={!tropeDifficulty || cyclingTropes} className={`button generate-trope-button ${selectedShow.toLowerCase().replace(' ', '-')}`}>
             Generate Tropes
           </button>
 

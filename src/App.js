@@ -52,7 +52,7 @@ function App() {
           .filter(show => show !== selectedShow)
           .map((show, index) => (
             <button key={index} value={show} onClick={() => handleSelect({ target: { value: show } })}
-            className={`show-button ${show.toLowerCase().replace(" ", "-")}-btn ${selectedShow && 'small-button'}`}
+            className={`button show-button ${show.toLowerCase().replace(" ", "-")}-btn ${selectedShow && 'small-button'}`}
 >
               {show}
             </button>
