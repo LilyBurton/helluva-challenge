@@ -198,12 +198,14 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const getGenres = () => {
     if (selectedShow === 'Hazbin Hotel') return 'hazbin-genres';
     if (selectedShow === 'Helluva Boss') return 'helluva-genres';
+    if (selectedShow === 'Crossover') return 'crossover-genres';
     return 'default';
   };
 
   const getTropes = () => {
     if (selectedShow === 'Hazbin Hotel') return 'hazbin-tropes';
     if (selectedShow === 'Helluva Boss') return 'helluva-tropes';
+    if (selectedShow === 'Crossover') return 'crossover-tropes';
     return 'default';
   };
   console.log("Finalized Tropes:", finalizedTropes)

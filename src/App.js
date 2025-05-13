@@ -46,7 +46,6 @@ function App() {
       {/* ✅ Fixed dropdown */}
       <div className = 'show-selection'>
       <h1 className={getTitleClass()}>{getShowTitle()}</h1>
-        Pick a show
         <div className="button-selection">
           {vivShows
           .filter(show => show !== selectedShow)

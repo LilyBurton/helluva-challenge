@@ -29,6 +29,7 @@ header, .container, .main {
   background-attachment: fixed;
   background-size: cover; /* or 'contain' depending on your design */
   background-position: center;
+  min-height: 100vh;
 }
 
 .helluva-background {
@@ -37,6 +38,7 @@ header, .container, .main {
 
   .crossover-background, .default-background {
     background-color: #4F1C51;
+    min-height: 100vh;
   }
 
   .default-text {
@@ -46,8 +48,9 @@ header, .container, .main {
     color: #C5172E;
   }
 
-  .default-text, .hazbin-text, .helluva-text {
+  .default-text, .hazbin-text, .helluva-text, .crossover-text {
     margin: 0;
+    padding: 10px;
   }
 
   .show-selection {
@@ -154,7 +157,13 @@ header, .container, .main {
 
 .hazbin-characters,
 .helluva-characters,
-.crossover-characters {
+.crossover-characters, 
+.hazbin-genres,
+.helluva-genres,
+.crossover-genres,
+.hazbin-tropes,
+.helluva-tropes,
+.crossover-tropes {
   font-size: 30px; /* Base size for paragraph/text content */
 }
 
