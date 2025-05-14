@@ -34,8 +34,18 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
   useEffect(() => {
     if (!isCycling) return;
 
-    let firstPool = selectedShow === "Crossover" ? hazbinCharacters : hazbinCharacters.concat(helluvaCharacters);
-    let secondPool = selectedShow === "Crossover" ? helluvaCharacters : firstPool;
+    let firstPool, secondPool;
+
+      if (selectedShow === "Hazbin Hotel") {
+        firstPool = hazbinCharacters;
+        secondPool = hazbinCharacters;
+      } else if (selectedShow === "Helluva Boss") {
+        firstPool = helluvaCharacters;
+        secondPool = helluvaCharacters;
+      } else if (selectedShow === "Crossover") {
+        firstPool = hazbinCharacters;
+        secondPool = helluvaCharacters;
+      }
 
     if (firstPool.length === 0 || secondPool.length === 0) return;
 

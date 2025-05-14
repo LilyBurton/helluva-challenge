@@ -16,10 +16,6 @@ header, .container, .main {
   padding-top: 0;
 }
 
-.show-selection {
-  text-align: center;
-}
-
 .hazbin-background {
     background-image: url("./HazbinHotelWallpaper.jpg");
   }
@@ -46,6 +42,7 @@ header, .container, .main {
     font-size: 100px;
     text-shadow: 5px 2px black;
     color: #C5172E;
+
   }
 
   .default-text, .hazbin-text, .helluva-text, .crossover-text {
@@ -58,6 +55,7 @@ header, .container, .main {
     text-shadow: 5px 2px black;
     color: #C5172E;
     font-size: 2rem;
+    text-align: center;
   }
   
   @media (max-width: 768px) {
@@ -71,7 +69,7 @@ header, .container, .main {
     padding: 50px;
   }
 
-  .show-button, .difficulty-button, .trope-button, .generate-genre-button, .generate-character-button {
+  .show-button, .difficulty-button, .trope-button, .generate-genre-button, .generate-character-button, .generate-trope-button {
     padding: 2.5rem 2.5rem;
     font-size: 1rem;
     background-color: #F5EFFF;
@@ -164,7 +162,7 @@ header, .container, .main {
 .hazbin-tropes,
 .helluva-tropes,
 .crossover-tropes {
-  font-size: 30px; /* Base size for paragraph/text content */
+  font-size: 35px; /* Base size for paragraph/text content */
 }
 
 .difficulty-buttons, .tropes-buttons {
