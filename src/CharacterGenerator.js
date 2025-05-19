@@ -11,18 +11,20 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
   useEffect(() => {
     if (!selectedShow) return;
 
+    const API_BASE_URL = "https://helluva-challenge.onrender.com";
+
     if (selectedShow === "Crossover") {
       // Fetch both Hazbin and Helluva characters
-      fetch("http://localhost:8000/characters?show=Hazbin Hotel")
+      fetch(`${API_BASE_URL}/characters?show=Hazbin Hotel`)
         .then((res) => res.json())
         .then((data) => setHazbinCharacters(data.characters || []));
 
-      fetch("http://localhost:8000/characters?show=Helluva Boss")
+      fetch(`${API_BASE_URL}/characters?show=Helluva Boss`)
         .then((res) => res.json())
         .then((data) => setHelluvaCharacters(data.characters || []));
     } else {
       // Fetch only one set based on selected show
-      fetch(`http://localhost:8000/characters?show=${selectedShow}`)
+      fetch(`${API_BASE_URL}/characters?show=${selectedShow}`)
         .then((res) => res.json())
         .then((data) => {
           if (selectedShow === "Hazbin Hotel") setHazbinCharacters(data.characters || []);

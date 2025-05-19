@@ -12,17 +12,21 @@ from models import Show as ModelShow
 from models import Genre as ModelGenre
 from models import Trope as ModelTrope
 
+load_dotenv('.env')
+
 import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
-load_dotenv('.env')
+
+
+print("DATABASE_URL:", os.environ['DATABASE_URL'])
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React runs on port 3000
+    allow_origins=["https://helluva-challenge.vercel.app/"],  # React runs on port 3000
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
