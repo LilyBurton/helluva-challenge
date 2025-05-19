@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Tropes from './Tropes';
+
 
 // Blocking logic extracted to top-level scope
 const blockedNames = ['Octavia', 'Frank', 'Egg Bois', 'Kitty'];
