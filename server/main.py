@@ -12,11 +12,11 @@ from models import Show as ModelShow
 from models import Genre as ModelGenre
 from models import Trope as ModelTrope
 
-load_dotenv('.env')
-
 import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+
+load_dotenv('.env')
 
 
 
