@@ -99,7 +99,7 @@ async def get_tropes(genre: str = None):
     else:
         tropes = db.session.query(ModelTrope).all()
 
-    return {"tropes": [[trope.name, trope.description] for trope in tropes]}
+    return {"tropes": [trope.name, trope.description] for trope in tropes}
 
 # To run locally
 if __name__ == '__main__':
