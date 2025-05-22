@@ -217,7 +217,6 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     setCyclingTropes(false);
     setGenreDifficulty('');
     setTropeDifficulty('');
-    setShowTropeGenerator(false);
   }, [selectedShow]);
 
   return (
