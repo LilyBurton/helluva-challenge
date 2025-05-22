@@ -101,6 +101,12 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
     return "default-text"; // For Crossover or home
   }
 
+  useEffect(() => {
+    setGeneratedFirstName('');
+    setGeneratedSecondName('');
+    setIsCycling(false);
+  }, [selectedShow]);
+
   return (
     <div className="name-generator-container">
       <h2 className={getCharactersClass()}>Characters</h2>
