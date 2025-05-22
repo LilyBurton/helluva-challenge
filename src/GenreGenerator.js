@@ -210,6 +210,13 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   };
   console.log("Finalized Tropes:", finalizedTropes)
 
+  useEffect (() => {
+    setFinalizedGenres('');
+    setFinalizedTropes('');
+    setCyclingGenres(false);
+    setCyclingTropes(false);
+  }, [selectedShow]);
+
   return (
     <div>
       <h2 className={getGenres()}>Genre Generator</h2>
