@@ -173,26 +173,26 @@ header, .container, .main {
 }
 
 /* Hover styles */
-.difficulty-button.easy:hover, .trope-button.easy:hover {
+button.difficulty-button.easy:hover, .trope-button.easy:hover {
   background-color: #4CAF50; /* green */
 }
-.difficulty-button.medium:hover, .trope-button.medium:hover {
+button.difficulty-button.medium:hover, .trope-button.medium:hover {
   background-color: #F9C80E; /* yellow */
 }
-.difficulty-button.hard:hover, .trope-button.hard:hover {
+button.difficulty-button.hard:hover, .trope-button.hard:hover {
   background-color: #D72638; /* red */
 }
 
 /* Active (selected) styles */
-.difficulty-button.active.easy, .trope-button.active.easy {
+button.difficulty-button.active.easy, .trope-button.active.easy {
   background-color: #4CAF50;
   color: white;
 }
-.difficulty-button.active.medium, .trope-button.active.medium {
+button.difficulty-button.active.medium, .trope-button.active.medium {
   background-color: #F9C80E;
   color: white;
 }
-.difficulty-button.active.hard, .trope-button.active.hard {
+button.difficulty-button.active.hard, .trope-button.active.hard {
   background-color: #D72638;
   color: white;
 }
