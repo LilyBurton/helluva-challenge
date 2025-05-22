@@ -11,7 +11,7 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
   useEffect(() => {
     if (!selectedShow) return;
 
-    const API_BASE = "process.env.NEXT_PUBLIC_API_BASE_URL;";
+    const API_BASE = "https://helluva-challenge.onrender.com";
 
     if (selectedShow === "Crossover") {
       // Fetch both Hazbin and Helluva characters

@@ -57,7 +57,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await fetch('http://localhost:8000/genres/');
+        const response = await fetch('https://helluva-challenge.onrender.com/genres/');
         const data = await response.json();
         const genreNames = data.map(g => g.name);
         setAllGenres(genreNames);
@@ -146,7 +146,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       // Step 1: Fetch all tropes for finalized genres
       for (const genre of finalizedGenres) {
         try {
-          const response = await fetch(`http://localhost:8000/tropes/?genre=${genre}`);
+          const response = await fetch(`https://helluva-challenge.onrender.com/tropes/?genre=${genre}`);
           const data = await response.json();
           allFetchedTropes[genre] = data.tropes;
         } catch (error) {
