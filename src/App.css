@@ -166,7 +166,7 @@ header, .container, .main {
 .hazbin-tropes,
 .helluva-tropes,
 .crossover-tropes {
-  font-size: 35px; /* Base size for paragraph/text content */
+  font-size: 40px; /* Base size for paragraph/text content */
 }
 
 .difficulty-buttons, .tropes-buttons {
@@ -211,6 +211,23 @@ button.trope-button.hard:hover { background-color: #D72638; }
   font-family: 'Griffy', cursive;
 }
 
+.difficulty-button.active.easy,
+.trope-button.active.easy {
+  background-color: #4CAF50 !important;
+  color: #fff !important;
+}
+
+.difficulty-button.active.medium,
+.trope-button.active.medium {
+  background-color: #F9C80E !important;
+  color: #fff !important;
+}
+
+.difficulty-button.active.hard,
+.trope-button.active.hard {
+  background-color: #D72638 !important;
+  color: #fff !important;
+}
 
 
 

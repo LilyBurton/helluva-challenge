@@ -32,6 +32,7 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
         });
     }
   }, [selectedShow]);
+  console.log(hazbinCharacters, helluvaCharacters)
 
   useEffect(() => {
     if (!isCycling) return;

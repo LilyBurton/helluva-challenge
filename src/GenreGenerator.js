@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 
 // Blocking logic extracted to top-level scope
@@ -51,8 +51,8 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const [cyclingGenres, setCyclingGenres] = useState(false);
   const [cyclingTropes, setCyclingTropes] = useState(false);
 
-  const difficultyLevels = ['1 - Easy', '2 - Medium', '3 - Hard'];
-  
+  const genreSectionRef = useRef(null);
+  const tropeSectionRef = useRef(null);
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -69,17 +69,18 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedCharacters.length < 2) return;
+  if (selectedCharacters.length < 2 && genreSectionRef.current) {
+    genreSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
 
-    const firstName = selectedCharacters[0]?.name;
-    const secondName = selectedCharacters[1]?.name;
-
-    const filtered = allGenres.filter(
-      genre => !shouldBlockGenre(firstName, secondName, genre)
-    );
-
-    setGeneratedGenres(filtered);
-  }, [selectedCharacters, allGenres]);
+  if (selectedCharacters.length < 2) return;
+  const firstName = selectedCharacters[0]?.name;
+  const secondName = selectedCharacters[1]?.name;
+  const filtered = allGenres.filter(
+    genre => !shouldBlockGenre(firstName, secondName, genre)
+  );
+  setGeneratedGenres(filtered);
+}, [selectedCharacters, allGenres]);
 
   const pickRandomUnique = (pool, exclude) => {
     const available = pool.filter(item => !exclude.includes(item));
@@ -193,6 +194,12 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   
     fetchAndCycleTropes();
   }, [cyclingTropes, finalizedGenres, tropeDifficulty]);
+
+   useEffect(() => {
+    if (showTropeGenerator && tropeSectionRef.current) {
+      tropeSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [showTropeGenerator]);
   
 
   const getGenres = () => {
@@ -221,7 +228,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 
   return (
     <div>
-      <h2 className={getGenres()}>Genre Generator</h2>
+      <h2 className={getGenres()} ref={genreSectionRef}>Genre Generator</h2>
         <div className='difficulty-buttons'>
           {['Easy', 'Medium', 'Hard'].map((level) => (
             <button
@@ -248,7 +255,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 
       {showTropeGenerator && (
         <>
-          <h2 className={getTropes()}>Trope Generator</h2>
+          <h2 className={getTropes()} ref={tropeSectionRef}>Trope Generator</h2>
           <div className='tropes-buttons'>
           {['Easy', 'Medium', 'Hard'].map((level) => (
             <button
@@ -279,6 +286,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     </div>
   );
 };
+
 
 export default GenreGenerator;
 
