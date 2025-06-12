@@ -222,7 +222,6 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   return (
     <div>
       <h2 className={getGenres()}>Genre Generator</h2>
-      <label>
         <div className='difficulty-buttons'>
           {['Easy', 'Medium', 'Hard'].map((level) => (
             <button
@@ -231,11 +230,12 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
               onClick={() => setGenreDifficulty(level)}
             >
               {level}
+
+              {console.log(`Button class: button difficulty-button ${level.toLowerCase()} ${genreDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`)}
             </button>
 
           ))}
         </div>
-      </label>
       <button onClick={() => setCyclingGenres(true)} disabled={!genreDifficulty || cyclingGenres} className={`button generate-genre-button ${selectedShow.toLowerCase().replace(' ', '-')}`}>
         Generate Genres
       </button>

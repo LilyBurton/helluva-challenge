@@ -65,8 +65,12 @@ header, .container, .main {
   }
   
 
-  .button-selection, .difficulty-button, .trope-button, .generate-genre-button, .generate-character-button{
+  .button-selection, .generate-genre-button, .generate-character-button{
     padding: 50px;
+  }
+
+  .difficulty-button, .trope-button {
+    padding: 1rem 2rem;
   }
 
   .show-button, .difficulty-button, .trope-button, .generate-genre-button, .generate-character-button, .generate-trope-button {
@@ -172,30 +176,19 @@ header, .container, .main {
   margin: 1rem 0;
 }
 
-/* Hover styles */
-button.difficulty-button.easy:hover, .trope-button.easy:hover {
-  background-color: #4CAF50; /* green */
+.difficulty-button.easy:hover {
+  background-color: #4CAF50;
 }
-button.difficulty-button.medium:hover, .trope-button.medium:hover {
-  background-color: #F9C80E; /* yellow */
+.difficulty-button.medium:hover {
+  background-color: #F9C80E;
 }
-button.difficulty-button.hard:hover, .trope-button.hard:hover {
-  background-color: #D72638; /* red */
+.difficulty-button.hard:hover {
+  background-color: #D72638;
 }
 
-/* Active (selected) styles */
-button.difficulty-button.active.easy, .trope-button.active.easy {
-  background-color: #4CAF50;
-  color: white;
-}
-button.difficulty-button.active.medium, .trope-button.active.medium {
-  background-color: #F9C80E;
-  color: white;
-}
-button.difficulty-button.active.hard, .trope-button.active.hard {
-  background-color: #D72638;
-  color: white;
-}
+button.trope-button.easy:hover { background-color: #4CAF50; }
+button.trope-button.medium:hover { background-color: #F9C80E; }
+button.trope-button.hard:hover { background-color: #D72638; }
 
 .difficulty-button.helluva-boss,
 .trope-button.helluva-boss,
