@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-
 // Blocking logic extracted to top-level scope
 const blockedNames = ['Octavia', 'Frank', 'Egg Bois', 'Kitty'];
 const blockedPairs = new Set([
@@ -21,27 +20,20 @@ function shouldBlockGenre(firstName, secondName, genre) {
   if (!isBlockedGenre) return false;
 
   if (blockedNames.includes(firstName) || blockedNames.includes(secondName)) {
-    console.log(`🛑 Blocked by name: ${firstName} or ${secondName} for genre "${genre}"`);
     return true;
   }
 
-  
   const pair = [firstName, secondName].sort().join('|');
   if (blockedPairs.has(pair)) {
-    console.log(`🛑 Blocked by pair: ${firstName} and ${secondName} for genre "${genre}"`);
     return true;
   }
 
-  // return blockedPairs.has(pair);
-
-  console.log(`✅ Genre "${genre}" allowed for ${firstName} and ${secondName}`);
   return false;
 }
 
-
 const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const [allGenres, setAllGenres] = useState([]);
-  const [genreTropes, setGenreTropes] = useState({})
+  const [genreTropes, setGenreTropes] = useState({});
   const [generatedGenres, setGeneratedGenres] = useState([]);
   const [finalizedGenres, setFinalizedGenres] = useState([]);
   const [showTropeGenerator, setShowTropeGenerator] = useState(false);
@@ -54,6 +46,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const genreSectionRef = useRef(null);
   const tropeSectionRef = useRef(null);
 
+  // Fetch genres on mount
   useEffect(() => {
     const fetchGenres = async () => {
       try {
@@ -68,20 +61,43 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     fetchGenres();
   }, []);
 
+  // Filter genres based on selected characters
   useEffect(() => {
-  if (selectedCharacters.length < 2 && genreSectionRef.current) {
-    genreSectionRef.current.scrollIntoView({ behavior: 'smooth' });
-  }
+    if (generatedGenres.length < 2 && genreSectionRef.current) {
+      genreSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
 
-  if (selectedCharacters.length < 2) return;
-  const firstName = selectedCharacters[0]?.name;
-  const secondName = selectedCharacters[1]?.name;
-  const filtered = allGenres.filter(
-    genre => !shouldBlockGenre(firstName, secondName, genre)
-  );
-  setGeneratedGenres(filtered);
-}, [selectedCharacters, allGenres]);
+    if (selectedCharacters.length < 2) return;
+    const firstName = selectedCharacters[0]?.name;
+    const secondName = selectedCharacters[1]?.name;
+    const filtered = allGenres.filter(
+      genre => !shouldBlockGenre(firstName, secondName, genre)
+    );
+    setGeneratedGenres(filtered);
+  }, [selectedCharacters, allGenres]);
 
+  // 1. Scroll to genres section when cycling starts
+  useEffect(() => {
+    if (cyclingGenres && genreSectionRef.current) {
+      genreSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [cyclingGenres]);
+
+  // 2. Scroll to tropes section when cycling starts
+  useEffect(() => {
+    if (cyclingTropes && tropeSectionRef.current) {
+      tropeSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [cyclingTropes]);
+
+  // 3. Scroll to tropes section after genres are finalized
+  useEffect(() => {
+    if (showTropeGenerator && tropeSectionRef.current) {
+      tropeSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [showTropeGenerator]);
+
+  // Utility to pick a random unique item
   const pickRandomUnique = (pool, exclude) => {
     const available = pool.filter(item => !exclude.includes(item));
     return available.length > 0
@@ -89,6 +105,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       : '';
   };
 
+  // Cycling genres logic
   useEffect(() => {
     if (!cyclingGenres) return;
 
@@ -100,7 +117,6 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 
     const firstName = selectedCharacters[0]?.name;
     const secondName = selectedCharacters[1]?.name;
-    
 
     for (let i = 0; i < count; i++) {
       genreIntervals[i] = setInterval(() => {
@@ -121,13 +137,11 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
         } while (shouldBlockGenre(firstName, secondName, picked));
 
         tempGenres[i] = picked;
-        
         setFinalizedGenres([...tempGenres]);
 
         if (i === count - 1) {
           setCyclingGenres(false);
           setShowTropeGenerator(true);
-          console.log('✅ Genre selection complete:', tempGenres);
         }
       }, delays[i]);
     }
@@ -138,12 +152,13 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     };
   }, [cyclingGenres, genreDifficulty, allGenres, selectedCharacters]);
 
+  // Cycling tropes logic
   useEffect(() => {
     if (!cyclingTropes || finalizedGenres.length === 0) return;
-  
+
     const fetchAndCycleTropes = async () => {
       const allFetchedTropes = {};
-  
+
       // Step 1: Fetch all tropes for finalized genres
       for (const genre of finalizedGenres) {
         try {
@@ -151,20 +166,19 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
           const data = await response.json();
           allFetchedTropes[genre] = data.tropes;
         } catch (error) {
-          console.error(`Error fetching tropes for genre "${genre}":`, error);
           allFetchedTropes[genre] = [];
         }
       }
-  
+
       setGenreTropes(allFetchedTropes);
-  
+
       // Step 2: Start cycling using fetched tropes
       const count = tropeDifficulty === 'Easy' ? 1 : tropeDifficulty === 'Medium' ? 2 : 3;
       const delays = [3000, 6000, 9000];
       let tempTropes = new Array(count).fill('');
       const tropeIntervals = [];
       const finalizationTimeouts = [];
-  
+
       for (let i = 0; i < count; i++) {
         tropeIntervals[i] = setInterval(() => {
           const combinedTropes = finalizedGenres.flatMap(genre => allFetchedTropes[genre] || []);
@@ -173,35 +187,39 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
             setFinalizedTropes([...tempTropes]);
           }
         }, 100);
-  
+
         finalizationTimeouts[i] = setTimeout(() => {
           clearInterval(tropeIntervals[i]);
           const combinedTropes = finalizedGenres.flatMap(genre => allFetchedTropes[genre] || []);
           tempTropes[i] = pickRandomUnique(combinedTropes, tempTropes);
           setFinalizedTropes([...tempTropes]);
-  
+
           if (i === count - 1) {
             setCyclingTropes(false);
           }
         }, delays[i]);
       }
-  
+
       return () => {
         tropeIntervals.forEach(clearInterval);
         finalizationTimeouts.forEach(clearTimeout);
       };
     };
-  
+
     fetchAndCycleTropes();
   }, [cyclingTropes, finalizedGenres, tropeDifficulty]);
 
-   useEffect(() => {
-    if (showTropeGenerator && tropeSectionRef.current) {
-      tropeSectionRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [showTropeGenerator]);
-  
+  // Reset everything when show changes
+  useEffect(() => {
+    setFinalizedGenres([]);
+    setFinalizedTropes([]);
+    setCyclingGenres(false);
+    setCyclingTropes(false);
+    setGenreDifficulty('');
+    setTropeDifficulty('');
+  }, [selectedShow]);
 
+  // Helpers for class names
   const getGenres = () => {
     if (selectedShow === 'Hazbin Hotel') return 'hazbin-genres';
     if (selectedShow === 'Helluva Boss') return 'helluva-genres';
@@ -215,35 +233,26 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     if (selectedShow === 'Crossover') return 'crossover-tropes';
     return 'default';
   };
-  console.log("Finalized Tropes:", finalizedTropes)
-
-  useEffect (() => {
-    setFinalizedGenres([]);
-    setFinalizedTropes([]);
-    setCyclingGenres(false);
-    setCyclingTropes(false);
-    setGenreDifficulty('');
-    setTropeDifficulty('');
-  }, [selectedShow]);
 
   return (
-    <div>
-      <h2 className={getGenres()} ref={genreSectionRef}>Genre Generator</h2>
-        <div className='difficulty-buttons'>
-          {['Easy', 'Medium', 'Hard'].map((level) => (
-            <button
-              key={level}
-              className={`button difficulty-button ${level.toLowerCase()} ${genreDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
-              onClick={() => setGenreDifficulty(level)}
-            >
-              {level}
-
-              {console.log(`Button class: button difficulty-button ${level.toLowerCase()} ${genreDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`)}
-            </button>
-
-          ))}
-        </div>
-      <button onClick={() => setCyclingGenres(true)} disabled={!genreDifficulty || cyclingGenres} className={`button generate-genre-button ${selectedShow.toLowerCase().replace(' ', '-')}`}>
+    <div ref={genreSectionRef}>
+      <h2 className={getGenres()}>Genre Generator</h2>
+      <div className='difficulty-buttons'>
+        {['Easy', 'Medium', 'Hard'].map((level) => (
+          <button
+            key={level}
+            className={`button difficulty-button ${level.toLowerCase()} ${genreDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
+            onClick={() => setGenreDifficulty(level)}
+          >
+            {level}
+          </button>
+        ))}
+      </div>
+      <button
+        onClick={() => setCyclingGenres(true)}
+        disabled={!genreDifficulty || cyclingGenres}
+        className={`button generate-genre-button ${selectedShow.toLowerCase().replace(' ', '-')}`}
+      >
         Generate Genres
       </button>
 
@@ -254,20 +263,24 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       </div>
 
       {showTropeGenerator && (
-        <>
-          <h2 className={getTropes()} ref={tropeSectionRef}>Trope Generator</h2>
+        <div ref={tropeSectionRef}>
+          <h2 className={getTropes()}>Trope Generator</h2>
           <div className='tropes-buttons'>
-          {['Easy', 'Medium', 'Hard'].map((level) => (
-            <button
-              key={level}
-              className={`button trope-button ${level.toLowerCase()} ${tropeDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
-              onClick={() => setTropeDifficulty(level)}
-            >
-              {level}
-            </button>
-          ))}
-        </div>
-          <button onClick={() => setCyclingTropes(true)} disabled={!tropeDifficulty || cyclingTropes} className={`button generate-trope-button ${selectedShow.toLowerCase().replace(' ', '-')}`}>
+            {['Easy', 'Medium', 'Hard'].map((level) => (
+              <button
+                key={level}
+                className={`button trope-button ${level.toLowerCase()} ${tropeDifficulty === level ? 'active' : ''} ${selectedShow.toLowerCase().replace(' ', '-')}`}
+                onClick={() => setTropeDifficulty(level)}
+              >
+                {level}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => setCyclingTropes(true)}
+            disabled={!tropeDifficulty || cyclingTropes}
+            className={`button generate-trope-button ${selectedShow.toLowerCase().replace(' ', '-')}`}
+          >
             Generate Tropes
           </button>
 
@@ -278,15 +291,14 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
                 {!cyclingTropes && trope[1] && (
                   <p className="trope-desc">{trope[1]}</p>
                 )}
-          </div>
+              </div>
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
 };
-
 
 export default GenreGenerator;
 
