@@ -38,7 +38,7 @@ header, .container, .main {
   }
 
   .default-text {
-    font-family: 'Bangers', cursive;
+    font-family: 'Bangers', cursive, sans-serif;
     font-size: 100px;
     text-shadow: 5px 2px black;
     color: #C5172E;
