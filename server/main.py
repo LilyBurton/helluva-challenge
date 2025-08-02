@@ -26,7 +26,17 @@ database_url = os.environ['DATABASE_URL']
 
 print("DATABASE_URL:", database_url)
 
-# Create engine with better connection handling
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # React runs on port 3000
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Create a custom engine with better connection handling
 engine = create_engine(
     database_url,
     pool_pre_ping=True,      # Test connections before use
@@ -39,24 +49,24 @@ engine = create_engine(
     }
 )
 
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # React runs on port 3000
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Use the custom engine with the middleware
-app.add_middleware(DBSessionMiddleware, db_url=database_url, engine=engine)
+# Add the database middleware with just the URL
+app.add_middleware(DBSessionMiddleware, db_url=database_url)
 
 # Retry decorator for database operations
 def retry_db_operation(func, max_retries=3):
     """Retry database operations on connection failures"""
     for attempt in range(max_retries):
         try:
+            # On first call, try to replace the engine with our enhanced one
+            if attempt == 0:
+                try:
+                    from fastapi_sqlalchemy import db
+                    if hasattr(db, '_db') and hasattr(db._db, 'engine') and db._db.engine.url != engine.url:
+                        db._db.engine = engine
+                        print("Replaced database engine with enhanced configuration")
+                except Exception as e:
+                    print(f"Could not replace engine: {e}")
+            
             return func()
         except OperationalError as e:
             if ("SSL connection has been closed" in str(e) or 
