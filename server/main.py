@@ -1,7 +1,7 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
-from fastapi_sqlalchemy import DBSessionMiddleware, db
+from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.exc import OperationalError
 
 from schema import Character as SchemaCharacter
@@ -26,17 +26,7 @@ database_url = os.environ['DATABASE_URL']
 
 print("DATABASE_URL:", database_url)
 
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # React runs on port 3000
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Create a custom engine with better connection handling
+# Create engine with better connection handling
 engine = create_engine(
     database_url,
     pool_pre_ping=True,      # Test connections before use
@@ -49,24 +39,32 @@ engine = create_engine(
     }
 )
 
-# Add the database middleware with just the URL
-app.add_middleware(DBSessionMiddleware, db_url=database_url)
+# Create SessionLocal class
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # React runs on port 3000
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Dependency to get database session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # Retry decorator for database operations
 def retry_db_operation(func, max_retries=3):
     """Retry database operations on connection failures"""
     for attempt in range(max_retries):
         try:
-            # On first call, try to replace the engine with our enhanced one
-            if attempt == 0:
-                try:
-                    from fastapi_sqlalchemy import db
-                    if hasattr(db, '_db') and hasattr(db._db, 'engine') and db._db.engine.url != engine.url:
-                        db._db.engine = engine
-                        print("Replaced database engine with enhanced configuration")
-                except Exception as e:
-                    print(f"Could not replace engine: {e}")
-            
             return func()
         except OperationalError as e:
             if ("SSL connection has been closed" in str(e) or 
@@ -84,11 +82,12 @@ async def root():
     return {"message": "hello world"}
 
 @app.post('/characters/', response_model=SchemaCharacter)
-async def character(character: SchemaCharacter):
+async def character(character: SchemaCharacter, db: Session = Depends(get_db)):
     def _create_character():
         db_character = ModelCharacter(name=character.name, show_id=character.show_id)
-        db.session.add(db_character)
-        db.session.commit()
+        db.add(db_character)
+        db.commit()
+        db.refresh(db_character)
         return db_character
     
     try:
@@ -98,15 +97,15 @@ async def character(character: SchemaCharacter):
         raise HTTPException(status_code=503, detail="Database temporarily unavailable")
 
 @app.get('/characters/')
-async def get_characters(show: str = None):
+async def get_characters(show: str = None, db: Session = Depends(get_db)):
     def _get_characters():
         if show:
-            show_record = db.session.query(ModelShow).filter_by(name=show).first()
+            show_record = db.query(ModelShow).filter_by(name=show).first()
             if not show_record:
                 return {"characters": []}
-            characters = db.session.query(ModelCharacter).filter_by(show_id=show_record.id).all()
+            characters = db.query(ModelCharacter).filter_by(show_id=show_record.id).all()
         else:
-            characters = db.session.query(ModelCharacter).all()
+            characters = db.query(ModelCharacter).all()
 
         return {"characters": [char.name for char in characters]}
     
@@ -117,11 +116,12 @@ async def get_characters(show: str = None):
         raise HTTPException(status_code=503, detail="Database temporarily unavailable")
 
 @app.post('/show/', response_model=SchemaShow)
-async def show(show: SchemaShow):
+async def show(show: SchemaShow, db: Session = Depends(get_db)):
     def _create_show():
         db_show = ModelShow(name=show.name)
-        db.session.add(db_show)
-        db.session.commit()
+        db.add(db_show)
+        db.commit()
+        db.refresh(db_show)
         return db_show
     
     try:
@@ -131,9 +131,9 @@ async def show(show: SchemaShow):
         raise HTTPException(status_code=503, detail="Database temporarily unavailable")
 
 @app.get('/show/')
-async def get_show():
+async def get_show(db: Session = Depends(get_db)):
     def _get_show():
-        show = db.session.query(ModelShow).all()
+        show = db.query(ModelShow).all()
         return show
     
     try:
@@ -143,11 +143,12 @@ async def get_show():
         raise HTTPException(status_code=503, detail="Database temporarily unavailable")
 
 @app.post('/genres/', response_model=SchemaGenre)
-async def genre(genre: SchemaGenre):
+async def genre(genre: SchemaGenre, db: Session = Depends(get_db)):
     def _create_genre():
         db_genre = ModelGenre(name=genre.name)
-        db.session.add(db_genre)
-        db.session.commit()
+        db.add(db_genre)
+        db.commit()
+        db.refresh(db_genre)
         return db_genre
     
     try:
@@ -157,9 +158,9 @@ async def genre(genre: SchemaGenre):
         raise HTTPException(status_code=503, detail="Database temporarily unavailable")
 
 @app.get('/genres/')
-async def genre():
+async def genre(db: Session = Depends(get_db)):
     def _get_genres():
-        genre = db.session.query(ModelGenre).all()
+        genre = db.query(ModelGenre).all()
         return genre
     
     try:
@@ -169,15 +170,16 @@ async def genre():
         raise HTTPException(status_code=503, detail="Database temporarily unavailable")
 
 @app.post('/tropes/', response_model=SchemaTrope)
-async def trope(trope: SchemaTrope):
+async def trope(trope: SchemaTrope, db: Session = Depends(get_db)):
     def _create_trope():
         db_trope = ModelTrope(
             name=trope.name, 
             genre_id=trope.genre_id, 
             description=trope.description
         )
-        db.session.add(db_trope)
-        db.session.commit()
+        db.add(db_trope)
+        db.commit()
+        db.refresh(db_trope)
         return db_trope
     
     try:
@@ -187,15 +189,15 @@ async def trope(trope: SchemaTrope):
         raise HTTPException(status_code=503, detail="Database temporarily unavailable")
 
 @app.get('/tropes/')
-async def get_tropes(genre: str = None):
+async def get_tropes(genre: str = None, db: Session = Depends(get_db)):
     def _get_tropes():
         if genre:
-            genre_record = db.session.query(ModelGenre).filter_by(name=genre).first()
+            genre_record = db.query(ModelGenre).filter_by(name=genre).first()
             if not genre_record:
                 return {"tropes": []}
-            tropes = db.session.query(ModelTrope).filter_by(genre_id=genre_record.id).all()
+            tropes = db.query(ModelTrope).filter_by(genre_id=genre_record.id).all()
         else:
-            tropes = db.session.query(ModelTrope).all()
+            tropes = db.query(ModelTrope).all()
 
         return {"tropes": [[trope.name, trope.description] for trope in tropes]}
     
