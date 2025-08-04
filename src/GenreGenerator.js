@@ -33,7 +33,6 @@ function shouldBlockGenre(firstName, secondName, genre) {
 
 const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   const [allGenres, setAllGenres] = useState([]);
-  const [genreTropes, setGenreTropes] = useState({});
   const [generatedGenres, setGeneratedGenres] = useState([]);
   const [finalizedGenres, setFinalizedGenres] = useState([]);
   const [showTropeGenerator, setShowTropeGenerator] = useState(false);
@@ -74,7 +73,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       genre => !shouldBlockGenre(firstName, secondName, genre)
     );
     setGeneratedGenres(filtered);
-  }, [selectedCharacters, allGenres]);
+  }, [selectedCharacters, allGenres, generatedGenres.length]);
 
   // 1. Scroll to genres section when cycling starts
   useEffect(() => {
@@ -169,8 +168,6 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
           allFetchedTropes[genre] = [];
         }
       }
-
-      setGenreTropes(allFetchedTropes);
 
       // Step 2: Start cycling using fetched tropes
       const count = tropeDifficulty === 'Easy' ? 1 : tropeDifficulty === 'Medium' ? 2 : 3;

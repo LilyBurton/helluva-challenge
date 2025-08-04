@@ -93,7 +93,7 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
       clearTimeout(stopFirst);
       clearTimeout(stopSecond);
     };
-  }, [isCycling, hazbinCharacters, helluvaCharacters, selectedShow]);
+  }, [isCycling, hazbinCharacters, helluvaCharacters, selectedShow, onCharacterGenerated]);
 
   const getCharactersClass = () => {
     if (selectedShow === "Hazbin Hotel") return "hazbin-characters";
