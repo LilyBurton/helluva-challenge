@@ -44,7 +44,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<AuthForm />} />
+        <Route path="/login" element={
+          <div className="login">
+            <AuthForm />
+          </div>
+        } />
         <Route path="/register" element={<AuthForm />} />
         <Route path="/" element={
           <div className="app-container">

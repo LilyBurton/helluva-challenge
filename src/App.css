@@ -229,6 +229,42 @@ button.trope-button.hard:hover { background-color: #D72638; }
   color: #fff !important;
 }
 
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  padding-left: 300px;
+}
+
+.auth-form-title {
+  font-family: 'Bangers', cursive;
+  font-size: 5rem;
+  color: #C5172E;
+  text-shadow: 5px 2px black;
+  text-align: center;
+}
+
+.auth-form {
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 100px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.auth-form input {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 10px 0;
+  margin: 25px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
 
 

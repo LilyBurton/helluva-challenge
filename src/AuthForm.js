@@ -103,8 +103,8 @@ function AuthForm() { // Encapsulate within a functional component
 
   return (
     <div>
-      <h1>{loginMode ? 'Login' : 'Sign Up'}</h1>
-      <form onSubmit={handleSubmit}>
+      <h1 className="auth-form-title">{loginMode ? 'Login' : 'Sign Up'}</h1>
+      <form className="auth-form" onSubmit={handleSubmit}>
         {!loginMode && ( // Only show name field if not in login mode
           <div>
             <label htmlFor="name">Name:</label>
@@ -120,7 +120,7 @@ function AuthForm() { // Encapsulate within a functional component
         )}
         <div>
           <label htmlFor="email">Email:</label>
-          <input
+          <input className="auth-form-input"
             type="email"
             id="email"
             name="email"
