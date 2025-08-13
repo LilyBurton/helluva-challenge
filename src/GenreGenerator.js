@@ -49,12 +49,18 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await fetch('https://helluva-challenge.onrender.com/genres/');
+        const response = await fetch('http://localhost:8000/genres/');
         const data = await response.json();
-        const genreNames = data.map(g => g.name);
+        
+        
+        // Fix: Handle the correct data structure
+        const genreNames = data.genres ? data.genres.map(g => g.name) : [];
+        console.log('Processed genre names:', genreNames); // Debug log
+        
         setAllGenres(genreNames);
       } catch (error) {
         console.error('Error fetching genres:', error);
+        setAllGenres([]); // Set empty array on error
       }
     };
     fetchGenres();
@@ -69,9 +75,15 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     if (selectedCharacters.length < 2) return;
     const firstName = selectedCharacters[0]?.name;
     const secondName = selectedCharacters[1]?.name;
+    
+    console.log('Filtering genres for:', firstName, 'and', secondName); // Debug log
+    console.log('All genres available:', allGenres); // Debug log
+    
     const filtered = allGenres.filter(
       genre => !shouldBlockGenre(firstName, secondName, genre)
     );
+    
+    console.log('Filtered genres:', filtered); // Debug log
     setGeneratedGenres(filtered);
   }, [selectedCharacters, allGenres, generatedGenres.length]);
 
@@ -106,7 +118,12 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
 
   // Cycling genres logic
   useEffect(() => {
-    if (!cyclingGenres) return;
+    if (!cyclingGenres || generatedGenres.length === 0) {
+      console.log('Not cycling genres:', { cyclingGenres, generatedGenresLength: generatedGenres.length });
+      return;
+    }
+
+    console.log('Starting genre cycling with:', generatedGenres); // Debug log
 
     const count = genreDifficulty === 'Easy' ? 1 : genreDifficulty === 'Medium' ? 2 : 3;
     const delays = [3000, 6000, 9000];
@@ -121,22 +138,26 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       genreIntervals[i] = setInterval(() => {
         let picked;
         do {
-          picked = pickRandomUnique(allGenres, tempGenres);
-        } while (shouldBlockGenre(firstName, secondName, picked));
+          picked = pickRandomUnique(generatedGenres, tempGenres); // Use filtered genres
+        } while (shouldBlockGenre(firstName, secondName, picked) && generatedGenres.length > tempGenres.filter(g => g).length);
 
-        tempGenres[i] = picked;
-        setFinalizedGenres([...tempGenres]);
+        if (picked) {
+          tempGenres[i] = picked;
+          setFinalizedGenres([...tempGenres]);
+        }
       }, 100);
 
       finalizationTimeouts[i] = setTimeout(() => {
         clearInterval(genreIntervals[i]);
         let picked;
         do {
-          picked = pickRandomUnique(allGenres, tempGenres);
-        } while (shouldBlockGenre(firstName, secondName, picked));
+          picked = pickRandomUnique(generatedGenres, tempGenres);
+        } while (shouldBlockGenre(firstName, secondName, picked) && generatedGenres.length > tempGenres.filter(g => g).length);
 
-        tempGenres[i] = picked;
-        setFinalizedGenres([...tempGenres]);
+        if (picked) {
+          tempGenres[i] = picked;
+          setFinalizedGenres([...tempGenres]);
+        }
 
         if (i === count - 1) {
           setCyclingGenres(false);
@@ -149,7 +170,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       genreIntervals.forEach(clearInterval);
       finalizationTimeouts.forEach(clearTimeout);
     };
-  }, [cyclingGenres, genreDifficulty, allGenres, selectedCharacters]);
+  }, [cyclingGenres, genreDifficulty, generatedGenres, selectedCharacters]);
 
   // Cycling tropes logic
   useEffect(() => {
@@ -161,7 +182,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       // Step 1: Fetch all tropes for finalized genres
       for (const genre of finalizedGenres) {
         try {
-          const response = await fetch(`https://helluva-challenge.onrender.com/tropes/?genre=${genre}`);
+          const response = await fetch(`http://localhost:8000/tropes/?genre=${genre}`);
           const data = await response.json();
           allFetchedTropes[genre] = data.tropes;
         } catch (error) {
@@ -214,6 +235,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
     setCyclingTropes(false);
     setGenreDifficulty('');
     setTropeDifficulty('');
+    setShowTropeGenerator(false);
   }, [selectedShow]);
 
   // Helpers for class names
@@ -247,7 +269,7 @@ const GenreGenerator = ({ selectedCharacters, selectedShow }) => {
       </div>
       <button
         onClick={() => setCyclingGenres(true)}
-        disabled={!genreDifficulty || cyclingGenres}
+        disabled={!genreDifficulty || cyclingGenres || generatedGenres.length === 0}
         className={`button generate-genre-button ${selectedShow.toLowerCase().replace(' ', '-')}`}
       >
         Generate Genres

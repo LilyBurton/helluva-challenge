@@ -4,10 +4,10 @@ function AuthForm() { // Encapsulate within a functional component
   // State declarations
   const [loginMode, setLoginMode] = useState(true); // Renamed 'login' to 'loginMode' for clarity
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    name: ''
   });
   const [errors, setErrors] = useState({}); // Initialize errors as an empty object
   const [isLoading, setIsLoading] = useState(false);

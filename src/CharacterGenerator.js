@@ -11,17 +11,26 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
   useEffect(() => {
     if (!selectedShow) return;
 
-    const API_BASE = "https://helluva-challenge.onrender.com";
+    // Connect to your FastAPI backend instead of the database
+    const API_BASE = 'http://localhost:8000';
 
     if (selectedShow === "Crossover") {
       // Fetch both Hazbin and Helluva characters
       fetch(`${API_BASE}/characters?show=Hazbin Hotel`)
         .then((res) => res.json())
-        .then((data) => setHazbinCharacters(data.characters || []));
+        .then((data) => setHazbinCharacters(data.characters || []))
+        .catch((error) => {
+          console.error('Error fetching Hazbin characters:', error);
+          setHazbinCharacters([]);
+        });
 
       fetch(`${API_BASE}/characters?show=Helluva Boss`)
         .then((res) => res.json())
-        .then((data) => setHelluvaCharacters(data.characters || []));
+        .then((data) => setHelluvaCharacters(data.characters || []))
+        .catch((error) => {
+          console.error('Error fetching Helluva characters:', error);
+          setHelluvaCharacters([]);
+        });
     } else {
       // Fetch only one set based on selected show
       fetch(`${API_BASE}/characters?show=${selectedShow}`)
@@ -29,10 +38,17 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
         .then((data) => {
           if (selectedShow === "Hazbin Hotel") setHazbinCharacters(data.characters || []);
           else setHelluvaCharacters(data.characters || []);
+        })
+        .catch((error) => {
+          console.error(`Error fetching ${selectedShow} characters:`, error);
+          if (selectedShow === "Hazbin Hotel") setHazbinCharacters([]);
+          else setHelluvaCharacters([]);
         });
     }
   }, [selectedShow]);
-  console.log(hazbinCharacters, helluvaCharacters)
+  
+  console.log('Hazbin characters:', hazbinCharacters);
+  console.log('Helluva characters:', helluvaCharacters);
 
   useEffect(() => {
     if (!isCycling) return;
