@@ -235,7 +235,8 @@ button.trope-button.hard:hover { background-color: #D72638; }
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  width: 100%;
+  background-color: #4F1C51;
   padding-left: 300px;
 }
 
@@ -250,8 +251,8 @@ button.trope-button.hard:hover { background-color: #D72638; }
 .auth-form {
   flex-direction: column;
   align-items: center;
-  background-color: #fff;
-  padding: 100px;
+  background-color: #f0ccf1;
+  padding: 70px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
@@ -261,10 +262,39 @@ button.trope-button.hard:hover { background-color: #D72638; }
   flex-direction: column;
   width: 300px;
   padding: 10px 0;
-  margin: 25px 0;
+  margin: 50px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
+.auth-form input:first-of-type {
+  margin-top: 0;
+}
+
+.auth-form-container {
+  height: 100vh;
+  font-family: 'Bangers', cursive;
+  font-size: 0.9rem;
+}
+
+.auth-form-button {
+  font-family: 'Bangers', cursive;
+  font-size: 1rem;
+  background-color: #C5172E;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 5px 2px black;
+  transition: transform 0.2s;
+}
+.auth-form-button:hover {
+  transform: scale(1.2);
+
+}
+
+
 
 
 

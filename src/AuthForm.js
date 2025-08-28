@@ -102,7 +102,7 @@ function AuthForm() { // Encapsulate within a functional component
   };
 
   return (
-    <div>
+    <div className="auth-form-container">
       <h1 className="auth-form-title">{loginMode ? 'Login' : 'Sign Up'}</h1>
       <form className="auth-form" onSubmit={handleSubmit}>
         {!loginMode && ( // Only show name field if not in login mode
@@ -153,13 +153,13 @@ function AuthForm() { // Encapsulate within a functional component
             {errors.confirmPassword && <p style={{ color: 'red' }}>{errors.confirmPassword}</p>}
           </div>
         )}
-        <button type="submit" disabled={isLoading}>
+        <button type="submit" disabled={isLoading} className="auth-form-button">
           {isLoading ? 'Processing...' : (loginMode ? 'Login' : 'Sign Up')}
         </button>
       </form>
       <p>
         {loginMode ? "Don't have an account?" : "Already have an account?"}{' '}
-        <button type="button" onClick={() => setLoginMode(!loginMode)}>
+        <button className="auth-form-button" type="button" onClick={() => setLoginMode(!loginMode)}>
           {loginMode ? 'Sign Up' : 'Login'}
         </button>
       </p>
