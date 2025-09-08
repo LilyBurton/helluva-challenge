@@ -4,6 +4,7 @@ import CharacterGenerator from './CharacterGenerator';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import AuthForm from './AuthForm';
+import APIQuotes from './APIQuotes';
 
 function App() {
   const [selectedShow, setSelectedShow] = useState('');
@@ -46,6 +47,7 @@ function App() {
       <Routes>
         <Route path="/login" element={
           <div className="login">
+            <APIQuotes />
             <AuthForm />
           </div>
         } />

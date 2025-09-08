@@ -231,13 +231,12 @@ button.trope-button.hard:hover { background-color: #D72638; }
 
 .login {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  width: 100%;
+  gap: 50px; /* Space between quote and login box */
+  min-height: 100vh;
+  padding: 20px;
   background-color: #4F1C51;
-  padding-left: 300px;
 }
 
 .auth-form-title {
@@ -292,6 +291,29 @@ button.trope-button.hard:hover { background-color: #D72638; }
 .auth-form-button:hover {
   transform: scale(1.2);
 
+}
+.quote-container {
+  float: left;
+  margin: 10px;
+}
+.quote-generator {
+   font-family: 'Bangers', cursive;
+  font-size: 0.9rem;
+  border: 2px solid #2c3e50;
+  background-color: #f0ccf1;
+  max-width: 500px;
+  color: red;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px; /* Space between quote and small-text */
+}
+
+.small-text {
+  font-family: 'Bangers', cursive;
+  font-size: 0.9rem;
+  max-width: 500px;
+  color: red;
+  padding: 10px;
 }
 
 

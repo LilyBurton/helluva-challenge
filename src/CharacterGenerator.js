@@ -40,15 +40,11 @@ const CharacterGenerator = ({ selectedShow, onCharacterGenerated }) => {
           else setHelluvaCharacters(data.characters || []);
         })
         .catch((error) => {
-          console.error(`Error fetching ${selectedShow} characters:`, error);
           if (selectedShow === "Hazbin Hotel") setHazbinCharacters([]);
           else setHelluvaCharacters([]);
         });
     }
   }, [selectedShow]);
-  
-  console.log('Hazbin characters:', hazbinCharacters);
-  console.log('Helluva characters:', helluvaCharacters);
 
   useEffect(() => {
     if (!isCycling) return;
