@@ -99,7 +99,7 @@ header, .container, .main {
   }
   
   .crossover-btn:hover {
-    background-color: #117a65;  /* green-teal */
+    background-color: #f0ccf1;  /* green-teal */
     color: white;
   }
 
@@ -315,6 +315,21 @@ button.trope-button.hard:hover { background-color: #D72638; }
   color: red;
   padding: 10px;
 }
+
+.hazbin-navbar, .helluva-navbar, .crossover-navbar {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.hazbin-navbar {
+  background-color: #7D1128;
+}
+
+.helluva-navbar {
+  background-color: #453643;
+}
+
 
 
 

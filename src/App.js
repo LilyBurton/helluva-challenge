@@ -5,12 +5,20 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import AuthForm from './AuthForm';
 import APIQuotes from './APIQuotes';
+import NavBar from './NavBar'
 
 function App() {
   const [selectedShow, setSelectedShow] = useState('');
   const [generatedCharacters, setGeneratedCharacters] = useState([]);
 
   const vivShows = ['Hazbin Hotel', 'Helluva Boss', 'Crossover'];
+
+  const getNavBar = () => {
+    if (selectedShow === "Hazbin Hotel") return "hazbin-navbar";
+    if (selectedShow === "Helluva Boss") return "helluva-navbar";
+    if (selectedShow === "Crossover") return "crossover-navbar";
+    return "default-navbar"
+  }
 
   const getBackgroundClass = () => {
     if (selectedShow === "Hazbin Hotel") return "hazbin-background";
@@ -56,6 +64,9 @@ function App() {
           <div className="app-container">
             <div className={`page-wrapper ${getBackgroundClass()}`}>
               <div className='show-selection'>
+                <div className={getNavBar()}>
+                  <NavBar />
+                </div>
                 <h1 className={getTitleClass()}>{getShowTitle()}</h1>
                 <div className="button-selection">
                   {vivShows
@@ -73,15 +84,15 @@ function App() {
                 </div>
                 {(selectedShow === "Hazbin Hotel" || selectedShow === "Helluva Boss" || selectedShow === "Crossover") && (
                   <>
-                    <CharacterGenerator
-                      onCharacterGenerated={handleCharacterGenerated}
-                      selectedShow={selectedShow}
-                      setGeneratedCharacters={setGeneratedCharacters}
-                    />
-                    <GenreGenerator
-                      selectedCharacters={generatedCharacters}
-                      selectedShow={selectedShow}
-                    />
+                      <CharacterGenerator
+                        onCharacterGenerated={handleCharacterGenerated}
+                        selectedShow={selectedShow}
+                        setGeneratedCharacters={setGeneratedCharacters}
+                      />
+                      <GenreGenerator
+                        selectedCharacters={generatedCharacters}
+                        selectedShow={selectedShow}
+                      />
                   </>
                 )}
               </div>
