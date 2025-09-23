@@ -12,6 +12,7 @@ const NavBar = () => {
             <a href="/" className="home-link" onClick={toggleMenu}>
                 Home
             </a>
+            <div className="right-group">
             <a href="/about" className="about-link" onClick={toggleMenu}>
                 About
             </a>
@@ -21,6 +22,7 @@ const NavBar = () => {
             <a href="/contact" className="contact-link" onClick={toggleMenu}>
                 <button>Contact</button>
             </a> 
+            </div>
         </div>
       
     </div>

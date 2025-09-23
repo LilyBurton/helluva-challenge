@@ -316,49 +316,177 @@ button.trope-button.hard:hover { background-color: #D72638; }
   padding: 10px;
 }
 
-.hazbin-navbar, .helluva-navbar, .crossover-navbar {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+        .hazbin-navbar {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          background-color: #7D1128;
+          display: flex;
+          align-items: center;
+          position: relative;
+        }
 
-.hazbin-navbar {
-  background-color: #7D1128;
-}
+        /* Desktop Navigation */
+        .nav-menu {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          padding: 0 20px;
+        }
 
-.helluva-navbar {
-  background-color: #453643;
-}
+        .home-link {
+          text-decoration: none;
+          font-size: 30px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          color: #87ceeb;
+          padding: 30px 20px;
+        }
 
-.home-link {
-  color: #87ceeb;
-  text-decoration: none;
-  font-size: 30px;
-  font-weight: 500;
-  padding: 30px 20px;
-  transition: all 0.3s ease;
-  order: 1;
-}
+        .about-link {
+          text-decoration: none;
+          font-weight: 500;
+          font-size: 30px;
+          color: #87ceeb;
+          padding: 30px 10%;
+          transition: all 0.3s ease;
+          margin-left: auto; /* This pushes about-link and everything after it to the right */
+        }
 
-.about-link, .login-link {
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 30px;
-  padding: 30px 10%;
-}
+        .login-link {
+          text-decoration: none;
+          font-weight: 500;
+          font-size: 30px;
+          color: #87ceeb;
+          padding: 30px 10%;
+          transition: all 0.3s ease;
+        }
 
-.about-link {
-  order: 2;
-}
+        .contact-link {
+          text-decoration: none;
+        }
 
-.login-link {
-  order: 3;
-}
+        .contact-link button {
+          background-color: rgba(255, 255, 255, 0.2);
+          color: white;
+          border: 2px solid transparent;
+          padding: 15px 25px;
+          border-radius: 25px;
+          font-weight: 500;
+          font-size: 20px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
 
-.contact-link {
-  text-decoration: none;
-  order: 4;
-}
+        .home-link:hover, .about-link:hover, .login-link:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          color: white;
+        }
+
+        .contact-link button:hover {
+          background-color: white;
+          color: #7D1128;
+          border-color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+          display: none;
+          background: none;
+          border: none;
+          color: white;
+          font-size: 24px;
+          cursor: pointer;
+          padding: 10px;
+          position: absolute;
+          right: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        /* Mobile Navigation */
+        @media screen and (max-width: 768px) {
+          .menu-toggle {
+            display: block;
+          }
+
+          .nav-menu {
+            position: fixed;
+            left: -100%;
+            top: 0;
+            flex-direction: column;
+            background-color: #7D1128;
+            width: 100%;
+            height: 100vh;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            justify-content: center;
+            padding: 0;
+            gap: 40px;
+          }
+
+          .nav-menu-active {
+            position: fixed;
+            left: 0;
+            top: 0;
+            flex-direction: column;
+            background-color: #7D1128;
+            width: 100%;
+            height: 100vh;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            padding: 0;
+          }
+
+          .home-link, .about-link, .login-link {
+            padding: 20px;
+            font-size: 36px;
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-left: 0; /* Reset margin on mobile */
+          }
+
+          .contact-link {
+            width: 100%;
+            padding: 20px;
+          }
+
+          .contact-link button {
+            font-size: 24px;
+            padding: 20px 40px;
+          }
+        }
+
+        .main-content {
+          padding: 40px 20px;
+          text-align: center;
+          background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+          min-height: 80vh;
+        }
+
+        .main-content h1 {
+          color: #7D1128;
+          margin-bottom: 20px;
+          font-size: 2.5em;
+        }
+
+        .main-content p {
+          color: #666;
+          font-size: 1.2em;
+          max-width: 600px;
+          margin: 0 auto;
+          line-height: 1.6;
+        }
 
 
 
