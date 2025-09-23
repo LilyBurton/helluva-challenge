@@ -330,6 +330,36 @@ button.trope-button.hard:hover { background-color: #D72638; }
   background-color: #453643;
 }
 
+.home-link {
+  color: #87ceeb;
+  text-decoration: none;
+  font-size: 30px;
+  font-weight: 500;
+  padding: 30px 20px;
+  transition: all 0.3s ease;
+  order: 1;
+}
+
+.about-link, .login-link {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 30px;
+  padding: 30px 10%;
+}
+
+.about-link {
+  order: 2;
+}
+
+.login-link {
+  order: 3;
+}
+
+.contact-link {
+  text-decoration: none;
+  order: 4;
+}
+
 
 
 
