@@ -12,7 +12,6 @@ const NavBar = () => {
             <a href="/" className="home-link" onClick={toggleMenu}>
                 Home
             </a>
-            <div className="right-group">
             <a href="/about" className="about-link" onClick={toggleMenu}>
                 About
             </a>
@@ -24,8 +23,6 @@ const NavBar = () => {
             </a> 
             </div>
         </div>
-      
-    </div>
   )
 }
 
