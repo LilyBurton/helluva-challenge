@@ -158,16 +158,17 @@ header, .container, .main {
 
 
 .hazbin-characters,
-.helluva-characters,
 .crossover-characters, 
 .hazbin-genres,
-.helluva-genres,
 .crossover-genres,
 .hazbin-tropes,
-.helluva-tropes,
 .crossover-tropes {
   font-size: 40px; /* Base size for paragraph/text content */
 }
+
+.helluva-characters, .helluva-genres, .hazbin-tropes {
+  font-size: 20px;
+} 
 
 .difficulty-buttons, .tropes-buttons {
   display: flex;
@@ -323,6 +324,10 @@ button.trope-button.hard:hover { background-color: #D72638; }
   align-items: center;
 }
 
+.helluva-navbar {
+  font-size: 23px;
+}
+
 /* Desktop Navigation */
 
 .nav-menu {
@@ -334,42 +339,39 @@ button.trope-button.hard:hover { background-color: #D72638; }
 
 .home-link {
   text-decoration: none;
-  font-size: 30px;
   color: #87ceeb;
   padding-right: 30px;
 }
 
  .about-link {
   text-decoration: none;
-  font-size: 30px;
   color: #87ceeb;
   padding-right: 30px;
-  margin-left: auto;
+  margin-left: 980px;
  }
 
 .login-link {
   text-decoration: none;
-  font-size: 30px;
   color: #87ceeb;
-  padding-right: 30px;
+  padding-right: 20px;
 }
 
 .contact-link {
   text-decoration: none;
-  padding: 30px 10%;
+  padding-top: 5px;
 }   
 
-/* .contact-link button {
+.contact-link button {
   background-color: rgba(255, 255, 255, 0.2);
   color: white;
   border: 2px solid transparent;
-  padding: 15px 25px;
   border-radius: 25px;
   font-weight: 500;
   font-size: 20px;
+  padding: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-}  */
+} 
 
 .home-link:hover, .about-link:hover, .login-link:hover {
   color: white;

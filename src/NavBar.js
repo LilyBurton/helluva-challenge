@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react'
 
-const NavBar = () => {
+const NavBar = ({ selectedShow }) => {
     const [navBar, setNavBar] = useState(false);
+
+    const contactButton = () => {
+        if (selectedShow === "Hazbin Hotel") return "hazbin-button";
+        if (selectedShow === "Helluva Boss") return "helluva-button";
+        if (selectedShow === "Crossover") return "crossover-button";
+    return "default-button";
+    }
 
     const toggleMenu = () => {
         setNavBar(!navBar)
@@ -19,7 +26,7 @@ const NavBar = () => {
                 Login
             </a> 
             <a href="/contact" className="contact-link" onClick={toggleMenu}>
-                <button>Contact</button>
+                <button classname = {contactButton()}>Contact</button>
             </a> 
             </div>
         </div>
