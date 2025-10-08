@@ -324,6 +324,18 @@ button.trope-button.hard:hover { background-color: #D72638; }
   align-items: center;
 }
 
+.contact-link button.hazbin-button {
+  font-family: 'Griffy', cursive;
+}
+
+.contact-link button.helluva-button {
+  font-family: 'Rock Salt', cursive;
+}
+
+.contact-link button.default-button, button.crossover-button {
+  font-family: 'Bangers', cursive;
+}
+
 .helluva-navbar {
   font-size: 23px;
 }
@@ -359,7 +371,7 @@ button.trope-button.hard:hover { background-color: #D72638; }
 .contact-link {
   text-decoration: none;
   padding-top: 5px;
-}   
+}
 
 .contact-link button {
   background-color: rgba(255, 255, 255, 0.2);

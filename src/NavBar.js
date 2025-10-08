@@ -26,7 +26,7 @@ const NavBar = ({ selectedShow }) => {
                 Login
             </a> 
             <a href="/contact" className="contact-link" onClick={toggleMenu}>
-                <button classname = {contactButton()}>Contact</button>
+                <button className={contactButton()}>Contact</button>
             </a> 
             </div>
         </div>

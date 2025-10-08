@@ -65,7 +65,7 @@ function App() {
             <div className={`page-wrapper ${getBackgroundClass()}`}>
               <div className='show-selection'>
                 <div className={getNavBar()}>
-                  <NavBar />
+                  <NavBar selectedShow={selectedShow}/>
                 </div>
                 <h1 className={getTitleClass()}>{getShowTitle()}</h1>
                 <div className="button-selection">
