@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GenreGenerator from './GenreGenerator';
 import CharacterGenerator from './CharacterGenerator';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import AuthForm from './AuthForm';
 import APIQuotes from './APIQuotes';
 import NavBar from './NavBar'
+
 
 function App() {
   const [selectedShow, setSelectedShow] = useState('');
@@ -68,6 +69,7 @@ function App() {
                   <NavBar selectedShow={selectedShow}/>
                 </div>
                 <h1 className={getTitleClass()}>{getShowTitle()}</h1>
+                {selectedShow !== 'Hazbin Hotel' && selectedShow !== 'Helluva Boss' && (
                 <div className="button-selection">
                   {vivShows
                     .filter(show => show !== selectedShow)
@@ -82,6 +84,7 @@ function App() {
                       </button>
                     ))}
                 </div>
+                )}
                 {(selectedShow === "Hazbin Hotel" || selectedShow === "Helluva Boss" || selectedShow === "Crossover") && (
                   <>
                       <CharacterGenerator

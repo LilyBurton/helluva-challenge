@@ -3,13 +3,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap'); */
 
 @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Griffy&family=Kavoon&family=Pacifico&family=Parisienne&family=Quicksand:wght@300..700&family=Rock+Salt&display=swap');
-
+ 
+/* * { border: 1px solid red !important; }  */
 
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  overflow-x: hidden;
+  min-height: 100%
 }
 
 header, .container, .main {
@@ -27,15 +27,15 @@ header, .container, .main {
   background-size: cover; /* or 'contain' depending on your design */
   background-position: center;
   min-height: 100vh;
+  padding-bottom: 50px;
 }
 
 .helluva-background {
   background-image: url("./HelluvaBossWallpaper.jpg");
 }
 
-  .crossover-background, .default-background {
+  .crossover-background, .default-background, .hazbin-background {
     background-color: #4F1C51;
-    min-height: 100vh;
   }
 
   .default-text {
@@ -100,7 +100,7 @@ header, .container, .main {
   }
   
   .crossover-btn:hover {
-    background-color: #f0ccf1;  /* green-teal */
+    background-color: #f0ccf1;  
     color: white;
   }
 
@@ -163,14 +163,13 @@ header, .container, .main {
   font-size: 40px; /* Base size for paragraph/text content */
 }
 
-.helluva-characters, .helluva-genres, .hazbin-tropes {
+.helluva-characters, .helluva-genres, .helluva-tropes {
   font-size: 20px;
 } 
 
 .difficulty-buttons, .tropes-buttons {
   display: flex;
   justify-content: center;
-  gap: 1rem;
   margin: 1rem 0;
 }
 
@@ -352,20 +351,20 @@ button.trope-button.hard:hover { background-color: #D72638; }
 
 .home-link {
   text-decoration: none;
-  color: #87ceeb;
+  color: #f0ccf1;
   padding-right: 30px;
 }
 
  .about-link {
   text-decoration: none;
-  color: #87ceeb;
+  color: #f0ccf1;
   padding-right: 30px;
   margin-left: 980px;
  }
 
 .login-link {
   text-decoration: none;
-  color: #87ceeb;
+  color: #f0ccf1;
   padding-right: 30px;
 }
 
