@@ -7,11 +7,16 @@ name = "pypi"
 alembic = "*"
 psycopg2 = "*"
 fastapi-sqlalchemy = "*"
+pydantic = "*"
 fastapi = "*"
 uvicorn = "*"
-sqlalchemy = "*"
 python-dotenv = "*"
-pydantic = "*"
+psycopg2-binary = "*"
+passlib = "*"
+bcrypt = "*"
+python-jose = "*"
+python-multipart = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 
