@@ -4,6 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+passlib = "*"
+bcrypt = "*"
+python-jose = "*"
+python-multipart = "*"
 
 [dev-packages]
 
